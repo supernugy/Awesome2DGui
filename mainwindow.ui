@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>400</height>
+    <width>400</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>550</width>
+    <width>400</width>
     <height>350</height>
    </size>
   </property>
@@ -25,7 +25,7 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>501</width>
+      <width>371</width>
       <height>80</height>
      </rect>
     </property>
@@ -55,8 +55,8 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>90</y>
+      <x>110</x>
+      <y>190</y>
       <width>111</width>
       <height>89</height>
      </rect>
@@ -109,8 +109,8 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>190</y>
+      <x>280</x>
+      <y>220</y>
       <width>111</width>
       <height>61</height>
      </rect>
@@ -132,115 +132,11 @@
      </item>
     </layout>
    </widget>
-   <widget class="QRadioButton" name="rotation0">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>110</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation45">
-    <property name="geometry">
-     <rect>
-      <x>373</x>
-      <y>142</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation90">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>200</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation135">
-    <property name="geometry">
-     <rect>
-      <x>373</x>
-      <y>258</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation180">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>290</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation225">
-    <property name="geometry">
-     <rect>
-      <x>247</x>
-      <y>258</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation270">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>200</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rotation315">
-    <property name="geometry">
-     <rect>
-      <x>247</x>
-      <y>142</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="rotationsMainLabel">
     <property name="geometry">
      <rect>
-      <x>293</x>
-      <y>203</y>
+      <x>30</x>
+      <y>100</y>
       <width>60</width>
       <height>15</height>
      </rect>
@@ -249,108 +145,37 @@
      <string>Rotations</string>
     </property>
    </widget>
-   <widget class="QLabel" name="rotationLabel0">
+   <widget class="QListWidget" name="rotationsListWidget">
     <property name="geometry">
      <rect>
-      <x>316</x>
-      <y>97</y>
-      <width>16</width>
-      <height>16</height>
+      <x>20</x>
+      <y>120</y>
+      <width>81</width>
+      <height>161</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>0</string>
     </property>
    </widget>
-   <widget class="QLabel" name="rotationLabel45">
+   <widget class="QLineEdit" name="addRotationLineEdit">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>135</y>
-      <width>16</width>
-      <height>16</height>
+      <x>110</x>
+      <y>120</y>
+      <width>61</width>
+      <height>25</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>45</string>
     </property>
    </widget>
-   <widget class="QLabel" name="rotationLabel90">
+   <widget class="QPushButton" name="addRotationButton">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>202</y>
-      <width>16</width>
-      <height>16</height>
+      <x>110</x>
+      <y>150</y>
+      <width>87</width>
+      <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>90</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="rotationLabel135">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>270</y>
-      <width>25</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>135</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="rotationLabel180">
-    <property name="geometry">
-     <rect>
-      <x>308</x>
-      <y>307</y>
-      <width>25</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>180</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="rotationLabel225">
-    <property name="geometry">
-     <rect>
-      <x>225</x>
-      <y>270</y>
-      <width>25</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>225</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="rotationLabel270">
-    <property name="geometry">
-     <rect>
-      <x>197</x>
-      <y>202</y>
-      <width>25</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>270</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="rotationLabel315">
-    <property name="geometry">
-     <rect>
-      <x>225</x>
-      <y>135</y>
-      <width>25</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>315</string>
+     <string>Add rotation</string>
     </property>
    </widget>
   </widget>
@@ -359,7 +184,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>550</width>
+     <width>400</width>
      <height>25</height>
     </rect>
    </property>
