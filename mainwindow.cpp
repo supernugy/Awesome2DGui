@@ -4,17 +4,20 @@
 #include <QString>
 #include <QFileDialog>
 #include <QIntValidator>
+#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     QIntValidator *angleInputRange = new QIntValidator(0,90,this);
+    QIntValidator *rotationInputRange = new QIntValidator(0,360,this);
     QIntValidator *inputRange = new QIntValidator(0,65535,this);
     ui->setupUi(this);
     ui->widthLineEdit->setValidator(inputRange);
     ui->heightLineEdit->setValidator(inputRange);
     ui->angleLineEdit->setValidator(angleInputRange);
+    ui->addRotationLineEdit->setValidator(rotationInputRange);
     this->setWindowTitle("Prerenderer");
 }
 
@@ -22,6 +25,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+QStringList rotations;
 
 void MainWindow::on_objSelectButton_clicked()
 {
@@ -75,4 +80,19 @@ void MainWindow::on_renderButton_clicked()
     proces.start("./prerenderer-debug",arguments);
     proces.waitForFinished(-1);
     ui->label->setText("Done");
+}
+
+void MainWindow::on_addRotationButton_clicked()
+{
+    if(!ui->addRotationLineEdit->text().isEmpty()){
+        if(rotations.contains(ui->addRotationLineEdit->text())){
+            ui->rotationMessageLabel->setText("Cannot add existing \nrotation");
+        }else{
+            rotations<<ui->addRotationLineEdit->text();
+            ui->rotationsListWidget->addItem(ui->addRotationLineEdit->text());
+            ui->rotationMessageLabel->setText("Rotation "+ui->addRotationLineEdit->text()+" added");
+        }
+    }else{
+        ui->rotationMessageLabel->setText("Insert rotation value");
+    }
 }

@@ -55,8 +55,8 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>190</y>
+      <x>280</x>
+      <y>110</y>
       <width>111</width>
       <height>89</height>
      </rect>
@@ -117,16 +117,16 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QPushButton" name="renderButton">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Render</string>
+        <string/>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QPushButton" name="renderButton">
        <property name="text">
-        <string/>
+        <string>Render</string>
        </property>
       </widget>
      </item>
@@ -165,17 +165,49 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="addRotationButton">
+   <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>110</x>
       <y>150</y>
-      <width>87</width>
-      <height>27</height>
+      <width>120</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="addRotationButton">
+       <property name="text">
+        <string>Add rotation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="removeRotationButton">
+       <property name="text">
+        <string>Remove rotation</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="rotationMessageLabel">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>220</y>
+      <width>121</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Add rotation</string>
+     <string/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
     </property>
    </widget>
   </widget>

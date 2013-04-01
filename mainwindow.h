@@ -23,6 +23,8 @@ private slots:
 
     void on_renderButton_clicked();
 
+    void on_addRotationButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
