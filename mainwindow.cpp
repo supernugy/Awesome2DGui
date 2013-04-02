@@ -18,6 +18,7 @@ struct profile{
 
 QFile profilesFile("guiProfiles.txt");
 QList<profile> listOfProfiles;
+profile currentProfile;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -77,19 +78,22 @@ MainWindow::MainWindow(QWidget *parent) :
             readProfile.profileRotations=readRotations;
             listOfProfiles<<readProfile;
         }
-
-
-
     }
+
+    currentProfile=listOfProfiles.value(0);
+    ui->rotationsListWidget->addItems(currentProfile.profileRotations);
+    if(currentProfile.angle!="-1") {ui->angleLineEdit->setText(currentProfile.angle);}
+    if(currentProfile.height!="-1") {ui->heightLineEdit->setText(currentProfile.height);}
+    if(currentProfile.width!="-1") {ui->widthLineEdit->setText(currentProfile.width);}
+
 }
+
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-QStringList rotations;
-
 
 void MainWindow::on_objSelectButton_clicked()
 {
@@ -148,10 +152,10 @@ void MainWindow::on_renderButton_clicked()
 void MainWindow::on_addRotationButton_clicked()
 {
     if(!ui->addRotationLineEdit->text().isEmpty()){
-        if(rotations.contains(ui->addRotationLineEdit->text())){
+        if(currentProfile.profileRotations.contains(ui->addRotationLineEdit->text())){
             ui->rotationMessageLabel->setText("Cannot add existing \nrotation");
         }else{
-            rotations<<ui->addRotationLineEdit->text();
+            currentProfile.profileRotations<<ui->addRotationLineEdit->text();
             ui->rotationsListWidget->addItem(ui->addRotationLineEdit->text());
             ui->rotationMessageLabel->setText("Rotation "+ui->addRotationLineEdit->text()+" added");
         }
