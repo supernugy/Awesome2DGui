@@ -12,7 +12,7 @@
 #include <iostream>
 
 struct profile{
-    QString profileName, height, width, angle, zoom;
+    QString profileName, height, width, angle, zoom, layer;
     QStringList profileRotations;
 };
 
@@ -45,12 +45,14 @@ MainWindow::MainWindow(QWidget *parent) :
         defaultProfile.height="48";
         defaultProfile.width="64";
         defaultProfile.zoom="0.08";
+        defaultProfile.layer="0";
         QStringList defaultRotations;
         defaultRotations<<"0"<<"45"<<"90"<<"135"<<"180"<<"225"<<"270"<<"315";
         defaultProfile.profileRotations=defaultRotations;
         listOfProfiles<<defaultProfile;
         stream<<defaultProfile.profileName+"\nAngle\n"+defaultProfile.angle+"\nHeight\n"
-                +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\nZoom\n"+defaultProfile.zoom+"\n"+"rotations"+"\n";
+                +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\nZoom\n"+defaultProfile.zoom+"\n"
+                +"Layer\n"+defaultProfile.layer+"\n"+"rotations"+"\n";
         for (int var = 0; var < defaultProfile.profileRotations.size(); ++var) {
             stream<<defaultProfile.profileRotations.value(var)+"\n";
         }
@@ -72,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
             stream.readLine();
             readProfile.zoom=stream.readLine();
             stream.readLine();
+            readProfile.layer=stream.readLine();
+            stream.readLine();
             line=stream.readLine();
             QStringList readRotations;
             while(line!="end"){
@@ -91,6 +95,7 @@ MainWindow::MainWindow(QWidget *parent) :
     if(currentProfile.height!="-1") {ui->heightLineEdit->setText(currentProfile.height);}
     if(currentProfile.width!="-1") {ui->widthLineEdit->setText(currentProfile.width);}
     if(currentProfile.zoom!="-1") {ui->zoomLineEdit->setText(currentProfile.zoom);}
+    ui->layersComboBox->setCurrentIndex(currentProfile.layer.toInt());
 
 }
 
