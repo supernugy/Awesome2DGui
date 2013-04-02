@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>350</height>
+    <width>423</width>
+    <height>372</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -58,7 +58,7 @@
       <x>280</x>
       <y>110</y>
       <width>111</width>
-      <height>89</height>
+      <height>121</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -104,13 +104,27 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="zoomLineEdit">
+       <property name="inputMask">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Zoom:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>220</y>
+      <y>240</y>
       <width>111</width>
       <height>61</height>
      </rect>
@@ -216,7 +230,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>423</width>
      <height>25</height>
     </rect>
    </property>

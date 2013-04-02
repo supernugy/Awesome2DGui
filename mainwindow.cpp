@@ -12,7 +12,7 @@
 #include <iostream>
 
 struct profile{
-    QString profileName, height, width, angle;
+    QString profileName, height, width, angle, zoom;
     QStringList profileRotations;
 };
 
@@ -27,11 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QIntValidator *angleInputRange = new QIntValidator(0,90,this);
     QIntValidator *rotationInputRange = new QIntValidator(0,360,this);
     QIntValidator *inputRange = new QIntValidator(0,65535,this);
+    QDoubleValidator *zoomInputRange = new QDoubleValidator(0.01,1.00,2,this);
     ui->setupUi(this);
     ui->widthLineEdit->setValidator(inputRange);
     ui->heightLineEdit->setValidator(inputRange);
     ui->angleLineEdit->setValidator(angleInputRange);
     ui->addRotationLineEdit->setValidator(rotationInputRange);
+    ui->zoomLineEdit->setValidator(zoomInputRange);
     this->setWindowTitle("Prerenderer");
 
     if (!profilesFile.exists()){
@@ -39,15 +41,16 @@ MainWindow::MainWindow(QWidget *parent) :
         QTextStream stream(&profilesFile);
         profile defaultProfile;
         defaultProfile.profileName="Default";
-        defaultProfile.angle="-1";
-        defaultProfile.height="-1";
-        defaultProfile.width="-1";
+        defaultProfile.angle="45";
+        defaultProfile.height="48";
+        defaultProfile.width="64";
+        defaultProfile.zoom="0.08";
         QStringList defaultRotations;
         defaultRotations<<"0"<<"45"<<"90"<<"135"<<"180"<<"225"<<"270"<<"315";
         defaultProfile.profileRotations=defaultRotations;
         listOfProfiles<<defaultProfile;
         stream<<defaultProfile.profileName+"\nAngle\n"+defaultProfile.angle+"\nHeight\n"
-                +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\n"+"rotations"+"\n";
+                +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\nZoom\n"+defaultProfile.zoom+"\n"+"rotations"+"\n";
         for (int var = 0; var < defaultProfile.profileRotations.size(); ++var) {
             stream<<defaultProfile.profileRotations.value(var)+"\n";
         }
@@ -67,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent) :
             stream.readLine();
             readProfile.width=stream.readLine();
             stream.readLine();
+            readProfile.zoom=stream.readLine();
+            stream.readLine();
             line=stream.readLine();
             QStringList readRotations;
             while(line!="end"){
@@ -85,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     if(currentProfile.angle!="-1") {ui->angleLineEdit->setText(currentProfile.angle);}
     if(currentProfile.height!="-1") {ui->heightLineEdit->setText(currentProfile.height);}
     if(currentProfile.width!="-1") {ui->widthLineEdit->setText(currentProfile.width);}
+    if(currentProfile.zoom!="-1") {ui->zoomLineEdit->setText(currentProfile.zoom);}
 
 }
 
@@ -111,11 +117,7 @@ void MainWindow::on_renderButton_clicked()
 {
     QProcess proces;
     QStringList arguments;
-    QString texture;
-    QString width;
-    QString height;
-    QString angle;
-    QString objName;
+    QString texture, width, height, angle, objName, zoom;
 
     arguments<<"render";
 
@@ -134,6 +136,11 @@ void MainWindow::on_renderButton_clicked()
     if(!ui->angleLineEdit->text().isEmpty()){
         angle="--angle="+ui->angleLineEdit->text();
         arguments<<angle;
+    }
+
+    if(!ui->zoomLineEdit->text().isEmpty()){
+        zoom="--zoom="+ui->zoomLineEdit->text();
+        arguments<<zoom;
     }
 
     if(!ui->objectPathTextField->text().isEmpty()){
