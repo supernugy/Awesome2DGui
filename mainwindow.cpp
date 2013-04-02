@@ -7,6 +7,15 @@
 #include <QStringList>
 #include <QFile>
 #include <QTextStream>
+#include <QList>
+
+struct profile{
+    QString profileName, height, width, angle;
+    QStringList profileRotations;
+};
+
+QFile profilesFile("guiProfiles.txt");
+QList<profile> listOfProfiles;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,15 +30,31 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->angleLineEdit->setValidator(angleInputRange);
     ui->addRotationLineEdit->setValidator(rotationInputRange);
     this->setWindowTitle("Prerenderer");
-    QFile profilesFile("guiProfiles.txt");
 
     if (!profilesFile.exists()){
         profilesFile.open(QIODevice::ReadWrite);
         QTextStream stream(&profilesFile);
+        profile defaultProfile;
+        defaultProfile.profileName="Default";
+        defaultProfile.angle="-1";
+        defaultProfile.height="-1";
+        defaultProfile.width="-1";
+        QStringList defaultRotations;
+        defaultRotations<<"0"<<"45"<<"90"<<"135"<<"180"<<"225"<<"270"<<"315";
+        defaultProfile.profileRotations=defaultRotations;
+        listOfProfiles<<defaultProfile;
+        stream<<defaultProfile.profileName+"\nAngle\n"+defaultProfile.angle+"\nHeight\n"
+                +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\n"+"rotations"+"\n";
+        for (int var = 0; var < defaultProfile.profileRotations.size(); ++var) {
+            stream<<defaultProfile.profileRotations.value(var)+"\n";
+        }
+        stream<<"end"<<"\n"<<"\n";
+        stream.flush();
 
-        stream<<"#Default";
     }else{
-
+        profilesFile.open(QIODevice::ReadWrite);
+        QTextStream stream(&profilesFile);
+        QString line= stream.readLine();
 
     }
 }
@@ -40,6 +65,7 @@ MainWindow::~MainWindow()
 }
 
 QStringList rotations;
+
 
 void MainWindow::on_objSelectButton_clicked()
 {
