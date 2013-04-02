@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QIntValidator>
 #include <QStringList>
+#include <QFile>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,6 +21,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->angleLineEdit->setValidator(angleInputRange);
     ui->addRotationLineEdit->setValidator(rotationInputRange);
     this->setWindowTitle("Prerenderer");
+    QFile profilesFile("guiProfiles.txt");
+
+    if (!profilesFile.exists()){
+        profilesFile.open(QIODevice::ReadWrite);
+        QTextStream stream(&profilesFile);
+
+        stream<<"#Default";
+    }else{
+
+
+    }
 }
 
 MainWindow::~MainWindow()
