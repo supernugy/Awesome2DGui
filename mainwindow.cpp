@@ -8,6 +8,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QList>
+#include <fstream>
+#include <iostream>
 
 struct profile{
     QString profileName, height, width, angle;
@@ -50,11 +52,33 @@ MainWindow::MainWindow(QWidget *parent) :
         }
         stream<<"end"<<"\n"<<"\n";
         stream.flush();
-
     }else{
         profilesFile.open(QIODevice::ReadWrite);
         QTextStream stream(&profilesFile);
         QString line= stream.readLine();
+        while(!stream.atEnd()){
+            profile readProfile;
+            readProfile.profileName=line;
+            stream.readLine();
+            readProfile.angle=stream.readLine();
+            stream.readLine();
+            readProfile.height=stream.readLine();
+            stream.readLine();
+            readProfile.width=stream.readLine();
+            stream.readLine();
+            line=stream.readLine();
+            QStringList readRotations;
+            while(line!="end"){
+                readRotations<<line;
+                line=stream.readLine();
+            }
+            stream.readLine();
+            line=stream.readLine();
+            readProfile.profileRotations=readRotations;
+            listOfProfiles<<readProfile;
+        }
+
+
 
     }
 }
