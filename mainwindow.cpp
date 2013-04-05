@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     QIntValidator *angleInputRange = new QIntValidator(0,90,this);
-    QIntValidator *rotationInputRange = new QIntValidator(0,360,this);
+    QIntValidator *rotationInputRange = new QIntValidator(0,359,this);
     QIntValidator *inputRange = new QIntValidator(0,65535,this);
     QDoubleValidator *zoomInputRange = new QDoubleValidator(0.01,1.00,2,this);
     ui->setupUi(this);
@@ -149,7 +149,7 @@ void MainWindow::on_renderButton_clicked()
     }
 
     if(!ui->objectPathTextField->text().isEmpty()){
-        objName=ui->objectPathTextField->text();
+        objName="'"+ui->objectPathTextField->text()+"'";
         arguments<<objName;
     }else{
         ui->label->setText("Select obj. file");
