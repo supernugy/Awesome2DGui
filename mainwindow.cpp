@@ -185,3 +185,18 @@ void MainWindow::on_addRotationButton_clicked()
         ui->rotationMessageLabel->setText("Insert rotation value");
     }
 }
+
+void MainWindow::on_removeRotationButton_clicked()
+{
+    QList<QListWidgetItem *> selectedRotations=ui->rotationsListWidget->selectedItems();
+    for (int i = 0; i < selectedRotations.size(); ++i) {
+        for (int j = 0; j < currentProfile.profileRotations.length(); ++j) {
+            QString item=selectedRotations.value(i)->text();
+            if(currentProfile.profileRotations.value(j).compare(item)==0){
+                currentProfile.profileRotations.removeAt(j);
+                break;
+            }
+        }
+    }
+    qDeleteAll(selectedRotations);
+}

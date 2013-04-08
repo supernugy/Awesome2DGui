@@ -25,6 +25,8 @@ private slots:
 
     void on_addRotationButton_clicked();
 
+    void on_removeRotationButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
