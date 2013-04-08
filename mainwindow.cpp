@@ -19,6 +19,7 @@ struct profile{
 QFile profilesFile("guiProfiles.txt");
 QList<profile> listOfProfiles;
 profile currentProfile;
+Qt::SortOrder order=Qt::AscendingOrder;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -26,11 +27,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     QIntValidator *angleInputRange = new QIntValidator(0,90,this);
     QIntValidator *rotationInputRange = new QIntValidator(0,359,this);
-    QIntValidator *inputRange = new QIntValidator(0,65535,this);
-    QDoubleValidator *zoomInputRange = new QDoubleValidator(0.01,1.00,2,this);
+    QIntValidator *intInputRange = new QIntValidator(this);
+    QDoubleValidator *zoomInputRange = new QDoubleValidator(0.01,10.00,2,this);
     ui->setupUi(this);
-    ui->widthLineEdit->setValidator(inputRange);
-    ui->heightLineEdit->setValidator(inputRange);
+    ui->widthLineEdit->setValidator(intInputRange);
+    ui->heightLineEdit->setValidator(intInputRange);
     ui->angleLineEdit->setValidator(angleInputRange);
     ui->addRotationLineEdit->setValidator(rotationInputRange);
     ui->zoomLineEdit->setValidator(zoomInputRange);
@@ -90,13 +91,18 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     currentProfile=listOfProfiles.value(0);
-    ui->rotationsListWidget->addItems(currentProfile.profileRotations);
+    for (int i = 0; i < currentProfile.profileRotations.size(); ++i) {
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setData(Qt::DisplayRole, currentProfile.profileRotations.value(i).toInt());
+        ui->rotationsListWidget->addItem(item);
+    }
     if(currentProfile.angle!="-1") {ui->angleLineEdit->setText(currentProfile.angle);}
     if(currentProfile.height!="-1") {ui->heightLineEdit->setText(currentProfile.height);}
     if(currentProfile.width!="-1") {ui->widthLineEdit->setText(currentProfile.width);}
     if(currentProfile.zoom!="-1") {ui->zoomLineEdit->setText(currentProfile.zoom);}
     ui->layersComboBox->setCurrentIndex(currentProfile.layer.toInt());
-
+    ui->rotationsListWidget->setSortingEnabled(true);
+    ui->rotationsListWidget->sortItems(order);
 }
 
 
@@ -168,7 +174,11 @@ void MainWindow::on_addRotationButton_clicked()
             ui->rotationMessageLabel->setText("Cannot add existing \nrotation");
         }else{
             currentProfile.profileRotations<<ui->addRotationLineEdit->text();
-            ui->rotationsListWidget->addItem(ui->addRotationLineEdit->text());
+            QString newRotation=ui->addRotationLineEdit->text();
+            QListWidgetItem *item = new QListWidgetItem;
+            item->setData(Qt::DisplayRole, newRotation.toInt());
+            ui->rotationsListWidget->addItem(item);
+            ui->rotationsListWidget->sortItems(order);
             ui->rotationMessageLabel->setText("Rotation "+ui->addRotationLineEdit->text()+" added");
         }
     }else{
