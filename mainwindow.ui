@@ -211,7 +211,7 @@
    <widget class="QComboBox" name="layersComboBox">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>140</x>
       <y>250</y>
       <width>111</width>
       <height>25</height>
@@ -237,12 +237,22 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>130</y>
+      <y>120</y>
       <width>112</width>
-      <height>126</height>
+      <height>147</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="profileLabel">
+       <property name="text">
+        <string>Profile</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QComboBox" name="profilesComboBox"/>
      </item>
@@ -268,6 +278,19 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="layerLabel">
+    <property name="geometry">
+     <rect>
+      <x>143</x>
+      <y>233</y>
+      <width>58</width>
+      <height>15</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Layer</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
