@@ -206,7 +206,6 @@ void MainWindow::on_addRotationButton_clicked()
 {
     if(!ui->addRotationLineEdit->text().isEmpty()){
         if(currentProfile.profileRotations.contains(ui->addRotationLineEdit->text())){
-            ui->rotationMessageLabel->setText("Cannot add existing \nrotation");
         }else{
             currentProfile.profileRotations<<ui->addRotationLineEdit->text();
             QString newRotation=ui->addRotationLineEdit->text();
@@ -214,10 +213,7 @@ void MainWindow::on_addRotationButton_clicked()
             item->setData(Qt::DisplayRole, newRotation.toInt());
             ui->rotationsListWidget->addItem(item);
             ui->rotationsListWidget->sortItems(order);
-            ui->rotationMessageLabel->setText("Rotation "+ui->addRotationLineEdit->text()+" added");
         }
-    }else{
-        ui->rotationMessageLabel->setText("Insert rotation value");
     }
 }
 
