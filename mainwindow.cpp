@@ -25,71 +25,87 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    ui->setupUi(this);
+    setValidators();
+    this->setWindowTitle("Prerenderer");
+
+    if (!profilesFile.exists()){
+        generateGuiProfileFile();
+    }else{
+        loadProfilesFromFile();
+    }
+
+    loadCurrentProfileToGui();
+}
+
+void MainWindow::setValidators(){
     QIntValidator *angleInputRange = new QIntValidator(0,90,this);
     QIntValidator *rotationInputRange = new QIntValidator(0,359,this);
     QIntValidator *intInputRange = new QIntValidator(this);
     QDoubleValidator *zoomInputRange = new QDoubleValidator(0.01,10.00,2,this);
-    ui->setupUi(this);
     ui->widthLineEdit->setValidator(intInputRange);
     ui->heightLineEdit->setValidator(intInputRange);
     ui->angleLineEdit->setValidator(angleInputRange);
     ui->addRotationLineEdit->setValidator(rotationInputRange);
     ui->zoomLineEdit->setValidator(zoomInputRange);
-    this->setWindowTitle("Prerenderer");
+}
 
-    if (!profilesFile.exists()){
-        profilesFile.open(QIODevice::ReadWrite);
-        QTextStream stream(&profilesFile);
-        profile defaultProfile;
-        defaultProfile.profileName="Default";
-        defaultProfile.angle="45";
-        defaultProfile.height="48";
-        defaultProfile.width="64";
-        defaultProfile.zoom="0.08";
-        defaultProfile.layer="0";
-        QStringList defaultRotations;
-        defaultRotations<<"0"<<"45"<<"90"<<"135"<<"180"<<"225"<<"270"<<"315";
-        defaultProfile.profileRotations=defaultRotations;
-        listOfProfiles<<defaultProfile;
-        stream<<defaultProfile.profileName+"\nAngle\n"+defaultProfile.angle+"\nHeight\n"
-                +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\nZoom\n"+defaultProfile.zoom+"\n"
-                +"Layer\n"+defaultProfile.layer+"\n"+"rotations"+"\n";
-        for (int var = 0; var < defaultProfile.profileRotations.size(); ++var) {
-            stream<<defaultProfile.profileRotations.value(var)+"\n";
-        }
-        stream<<"end"<<"\n"<<"\n";
-        stream.flush();
-    }else{
-        profilesFile.open(QIODevice::ReadWrite);
-        QTextStream stream(&profilesFile);
-        QString line= stream.readLine();
-        while(!stream.atEnd()){
-            profile readProfile;
-            readProfile.profileName=line;
-            stream.readLine();
-            readProfile.angle=stream.readLine();
-            stream.readLine();
-            readProfile.height=stream.readLine();
-            stream.readLine();
-            readProfile.width=stream.readLine();
-            stream.readLine();
-            readProfile.zoom=stream.readLine();
-            stream.readLine();
-            readProfile.layer=stream.readLine();
-            stream.readLine();
+void MainWindow::loadProfilesFromFile(){
+    profilesFile.open(QIODevice::ReadWrite);
+    QTextStream stream(&profilesFile);
+    QString line= stream.readLine();
+    while(!stream.atEnd()){
+        profile readProfile;
+        readProfile.profileName=line;
+        stream.readLine();
+        readProfile.angle=stream.readLine();
+        stream.readLine();
+        readProfile.height=stream.readLine();
+        stream.readLine();
+        readProfile.width=stream.readLine();
+        stream.readLine();
+        readProfile.zoom=stream.readLine();
+        stream.readLine();
+        readProfile.layer=stream.readLine();
+        stream.readLine();
+        line=stream.readLine();
+        QStringList readRotations;
+        while(line!="end"){
+            readRotations<<line;
             line=stream.readLine();
-            QStringList readRotations;
-            while(line!="end"){
-                readRotations<<line;
-                line=stream.readLine();
-            }
-            stream.readLine();
-            line=stream.readLine();
-            readProfile.profileRotations=readRotations;
-            listOfProfiles<<readProfile;
         }
+        stream.readLine();
+        line=stream.readLine();
+        readProfile.profileRotations=readRotations;
+        listOfProfiles<<readProfile;
     }
+}
 
+void MainWindow::generateGuiProfileFile(){
+    profilesFile.open(QIODevice::ReadWrite);
+    QTextStream stream(&profilesFile);
+    profile defaultProfile;
+    defaultProfile.profileName="Default";
+    defaultProfile.angle="45";
+    defaultProfile.height="48";
+    defaultProfile.width="64";
+    defaultProfile.zoom="0.08";
+    defaultProfile.layer="0";
+    QStringList defaultRotations;
+    defaultRotations<<"0"<<"45"<<"90"<<"135"<<"180"<<"225"<<"270"<<"315";
+    defaultProfile.profileRotations=defaultRotations;
+    listOfProfiles<<defaultProfile;
+    stream<<defaultProfile.profileName+"\nAngle\n"+defaultProfile.angle+"\nHeight\n"
+            +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\nZoom\n"+defaultProfile.zoom+"\n"
+            +"Layer\n"+defaultProfile.layer+"\n"+"rotations"+"\n";
+    for (int var = 0; var < defaultProfile.profileRotations.size(); ++var) {
+        stream<<defaultProfile.profileRotations.value(var)+"\n";
+    }
+    stream<<"end"<<"\n"<<"\n";
+    stream.flush();
+}
+
+void MainWindow::loadCurrentProfileToGui(){
     currentProfile=listOfProfiles.value(0);
     for (int i = 0; i < currentProfile.profileRotations.size(); ++i) {
         QListWidgetItem *item = new QListWidgetItem;
@@ -104,7 +120,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rotationsListWidget->setSortingEnabled(true);
     ui->rotationsListWidget->sortItems(order);
 }
-
 
 
 MainWindow::~MainWindow()

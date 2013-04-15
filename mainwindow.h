@@ -17,6 +17,14 @@ public:
     
 private slots:
 
+    void generateGuiProfileFile();
+
+    void setValidators();
+
+    void loadProfilesFromFile();
+
+    void loadCurrentProfileToGui();
+
     void on_objSelectButton_clicked();
 
     void on_pngSelectButton_clicked();
