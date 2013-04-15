@@ -35,6 +35,8 @@ private slots:
 
     void on_removeRotationButton_clicked();
 
+    void on_profilesComboBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 };

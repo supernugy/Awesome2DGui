@@ -34,7 +34,13 @@ MainWindow::MainWindow(QWidget *parent) :
     }else{
         loadProfilesFromFile();
     }
+    for (int i = 0; i < listOfProfiles.size(); ++i) {
+        //ui->profilesListWidget->addItem(listOfProfiles.value(i).profileName);
+        ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
+    }
+    ui->profilesComboBox->setCurrentIndex(0);
 
+    currentProfile=listOfProfiles.value(0);
     loadCurrentProfileToGui();
 }
 
@@ -106,7 +112,7 @@ void MainWindow::generateGuiProfileFile(){
 }
 
 void MainWindow::loadCurrentProfileToGui(){
-    currentProfile=listOfProfiles.value(0);
+    ui->rotationsListWidget->clear();
     for (int i = 0; i < currentProfile.profileRotations.size(); ++i) {
         QListWidgetItem *item = new QListWidgetItem;
         item->setData(Qt::DisplayRole, currentProfile.profileRotations.value(i).toInt());
@@ -215,4 +221,14 @@ void MainWindow::on_removeRotationButton_clicked()
         }
     }
     qDeleteAll(selectedRotations);
+}
+
+void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &arg1)
+{
+    for (int i = 0; i < listOfProfiles.size(); ++i) {
+        if (listOfProfiles.value(i).profileName==arg1){
+            currentProfile=listOfProfiles.value(i);
+            loadCurrentProfileToGui();
+        }
+    }
 }
