@@ -142,7 +142,7 @@ void MainWindow::on_pngSelectButton_clicked()
 void MainWindow::on_renderButton_clicked()
 {
     QStringList arguments;
-    QString texture, width, height, angle, objName, zoom, input;
+    QString texture, width, height, angle, objName, zoom;
 
     arguments<<"render";
 
