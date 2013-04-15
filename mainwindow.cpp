@@ -12,11 +12,6 @@
 #include <fstream>
 #include <iostream>
 
-struct profile{
-    QString profileName, height, width, angle, zoom, layer;
-    QStringList profileRotations;
-};
-
 QFile profilesFile("guiProfiles.txt");
 QList<profile> listOfProfiles;
 profile currentProfile;
@@ -58,7 +53,7 @@ void MainWindow::setValidators(){
 }
 
 void MainWindow::loadProfilesFromFile(){
-    profilesFile.open(QIODevice::ReadWrite);
+    profilesFile.open(QIODevice::ReadOnly);
     QTextStream stream(&profilesFile);
     QString line= stream.readLine();
     while(!stream.atEnd()){
@@ -86,10 +81,11 @@ void MainWindow::loadProfilesFromFile(){
         readProfile.profileRotations=readRotations;
         listOfProfiles<<readProfile;
     }
+    profilesFile.close();
 }
 
 void MainWindow::generateGuiProfileFile(){
-    profilesFile.open(QIODevice::ReadWrite);
+    profilesFile.open(QIODevice::WriteOnly);
     QTextStream stream(&profilesFile);
     profile defaultProfile;
     defaultProfile.profileName="Default";
@@ -110,6 +106,7 @@ void MainWindow::generateGuiProfileFile(){
     }
     stream<<"end"<<"\n"<<"\n";
     stream.flush();
+    profilesFile.close();
 }
 
 void MainWindow::loadCurrentProfileToGui(){
@@ -126,6 +123,21 @@ void MainWindow::loadCurrentProfileToGui(){
     ui->layersComboBox->setCurrentIndex(currentProfile.layer.toInt());
     ui->rotationsListWidget->setSortingEnabled(true);
     ui->rotationsListWidget->sortItems(order);
+}
+
+void MainWindow::addProfileToFile(profile newProfile){
+
+    profilesFile.open(QIODevice::Append);
+    QTextStream stream(&profilesFile);
+    stream<<newProfile.profileName+"\nAngle\n"+newProfile.angle+"\nHeight\n"
+            +newProfile.height+"\nWidth\n"+newProfile.width+"\nZoom\n"+newProfile.zoom+"\n"
+            +"Layer\n"+newProfile.layer+"\n"+"rotations"+"\n";
+    for (int var = 0; var < newProfile.profileRotations.size(); ++var) {
+        stream<<newProfile.profileRotations.value(var)+"\n";
+    }
+    stream<<"end"<<"\n"<<"\n";
+    stream.flush();
+    profilesFile.close();
 }
 
 
@@ -269,7 +281,7 @@ void MainWindow::on_addProfileButton_clicked()
             newProfile.zoom="-1";
         }
 
-        newProfile.layer=ui->layersComboBox->currentText();
+        newProfile.layer=ui->layersComboBox->currentIndex();
 
         for (int i = 0; i < ui->rotationsListWidget->count(); ++i) {
             QString r=ui->rotationsListWidget->item(i)->text();
@@ -280,7 +292,7 @@ void MainWindow::on_addProfileButton_clicked()
         ui->profilesComboBox->addItem(newProfile.profileName);
         currentProfile=newProfile;
         ui->profilesComboBox->setCurrentIndex(ui->profilesComboBox->count()-1);
-
+        addProfileToFile(newProfile);
     }
 
 

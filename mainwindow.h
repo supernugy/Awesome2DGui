@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 
+struct profile{
+    QString profileName, height, width, angle, zoom, layer;
+    QStringList profileRotations;
+};
+
 namespace Ui {
 class MainWindow;
 }
@@ -40,6 +45,8 @@ private:
     void loadProfilesFromFile();
 
     void loadCurrentProfileToGui();
+
+    void addProfileToFile(profile newProfile);
 
     Ui::MainWindow *ui;
 };
