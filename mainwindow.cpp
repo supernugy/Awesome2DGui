@@ -240,7 +240,5 @@ void MainWindow::on_addProfileButton_clicked()
 
     pd->setWindowTitle("Add new profile");
     pd->show();
-    //QDialog *addButtonDialog=new QDialog(pd);
-    //addButtonDialog->show();
 
 }
