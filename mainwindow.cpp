@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "profiledialog.h"
 #include <QProcess>
 #include <QString>
 #include <QFileDialog>
@@ -231,4 +232,15 @@ void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &arg1)
             loadCurrentProfileToGui();
         }
     }
+}
+
+void MainWindow::on_addProfileButton_clicked()
+{
+    ProfileDialog *pd=new ProfileDialog(this);
+
+    pd->setWindowTitle("Add new profile");
+    pd->show();
+    //QDialog *addButtonDialog=new QDialog(pd);
+    //addButtonDialog->show();
+
 }

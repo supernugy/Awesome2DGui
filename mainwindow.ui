@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>551</width>
+    <width>437</width>
     <height>476</height>
    </rect>
   </property>
@@ -25,7 +25,7 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>501</width>
+      <width>381</width>
       <height>80</height>
      </rect>
     </property>
@@ -123,8 +123,8 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>350</y>
+      <x>280</x>
+      <y>320</y>
       <width>111</width>
       <height>61</height>
      </rect>
@@ -252,22 +252,55 @@
    <widget class="QListWidget" name="profilesListWidget">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>230</y>
+      <x>150</x>
+      <y>310</y>
       <width>111</width>
-      <height>161</height>
+      <height>81</height>
      </rect>
     </property>
    </widget>
    <widget class="QComboBox" name="profilesComboBox">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>280</x>
       <y>120</y>
       <width>101</width>
       <height>25</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>160</y>
+      <width>112</width>
+      <height>95</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QPushButton" name="addProfileButton">
+       <property name="text">
+        <string>Add profile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="editProfileButton">
+       <property name="text">
+        <string>Edit profile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="removeProfileButton">
+       <property name="text">
+        <string>Remove profile</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -275,7 +308,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>551</width>
+     <width>437</width>
      <height>25</height>
     </rect>
    </property>

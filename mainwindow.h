@@ -17,14 +17,6 @@ public:
     
 private slots:
 
-    void generateGuiProfileFile();
-
-    void setValidators();
-
-    void loadProfilesFromFile();
-
-    void loadCurrentProfileToGui();
-
     void on_objSelectButton_clicked();
 
     void on_pngSelectButton_clicked();
@@ -37,7 +29,18 @@ private slots:
 
     void on_profilesComboBox_currentIndexChanged(const QString &arg1);
 
+    void on_addProfileButton_clicked();
+
 private:
+
+    void generateGuiProfileFile();
+
+    void setValidators();
+
+    void loadProfilesFromFile();
+
+    void loadCurrentProfileToGui();
+
     Ui::MainWindow *ui;
 };
 
