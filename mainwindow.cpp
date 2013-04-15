@@ -126,9 +126,8 @@ void MainWindow::on_pngSelectButton_clicked()
 
 void MainWindow::on_renderButton_clicked()
 {
-    QProcess proces;
     QStringList arguments;
-    QString texture, width, height, angle, objName, zoom;
+    QString texture, width, height, angle, objName, zoom, input;
 
     arguments<<"render";
 
@@ -155,15 +154,17 @@ void MainWindow::on_renderButton_clicked()
     }
 
     if(!ui->objectPathTextField->text().isEmpty()){
-        objName="'"+ui->objectPathTextField->text()+"'";
+        objName=ui->objectPathTextField->text();
         arguments<<objName;
     }else{
         ui->label->setText("Select obj. file");
         return;
     }
 
-    proces.start("./prerenderer-debug",arguments);
-    proces.waitForFinished(-1);
+    QProcess *proces = new QProcess(this);
+    proces->start("./prerenderer-debug",arguments);
+    proces->waitForFinished(-1);
+
     ui->label->setText("Done");
 }
 
