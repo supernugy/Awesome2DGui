@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>372</height>
+    <width>551</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -25,7 +25,7 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>371</width>
+      <width>501</width>
       <height>80</height>
      </rect>
     </property>
@@ -55,8 +55,8 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>110</y>
+      <x>20</x>
+      <y>290</y>
       <width>111</width>
       <height>121</height>
      </rect>
@@ -123,8 +123,8 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>240</y>
+      <x>420</x>
+      <y>350</y>
       <width>111</width>
       <height>61</height>
      </rect>
@@ -164,7 +164,7 @@
      <rect>
       <x>20</x>
       <y>120</y>
-      <width>81</width>
+      <width>111</width>
       <height>161</height>
      </rect>
     </property>
@@ -172,7 +172,7 @@
    <widget class="QLineEdit" name="addRotationLineEdit">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>140</x>
       <y>120</y>
       <width>61</width>
       <height>25</height>
@@ -182,7 +182,7 @@
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>140</x>
       <y>150</y>
       <width>120</width>
       <height>71</height>
@@ -227,8 +227,8 @@
    <widget class="QComboBox" name="layersComboBox">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>280</y>
+      <x>140</x>
+      <y>250</y>
       <width>111</width>
       <height>25</height>
      </rect>
@@ -249,13 +249,23 @@
      </property>
     </item>
    </widget>
+   <widget class="QListWidget" name="profilesListWidget">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>120</y>
+      <width>111</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>412</width>
+     <width>551</width>
      <height>25</height>
     </rect>
    </property>
