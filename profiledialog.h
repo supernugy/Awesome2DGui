@@ -14,7 +14,17 @@ class ProfileDialog : public QDialog
 public:
     explicit ProfileDialog(QWidget *parent = 0);
     ~ProfileDialog();
+
+    void setMessageLabel(QString message);
+
+    QString profileName;
     
+private slots:
+
+    void on_okButton_clicked();
+
+    void on_cancelButton_clicked();
+
 private:
     Ui::ProfileDialog *ui;
 };

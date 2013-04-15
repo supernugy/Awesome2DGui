@@ -237,8 +237,51 @@ void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &arg1)
 void MainWindow::on_addProfileButton_clicked()
 {
     ProfileDialog *pd=new ProfileDialog(this);
-
+    pd->setMessageLabel("Write new profile name");
     pd->setWindowTitle("Add new profile");
     pd->show();
+
+    if(pd->exec()==QDialog::Accepted){
+        profile newProfile;
+        newProfile.profileName=pd->profileName;
+
+        if(!ui->angleLineEdit->text().isEmpty()){
+            newProfile.angle=ui->angleLineEdit->text();
+        }else{
+            newProfile.angle="-1";
+        }
+
+        if(!ui->heightLineEdit->text().isEmpty()){
+            newProfile.height=ui->heightLineEdit->text();
+        }else{
+            newProfile.height="-1";
+        }
+
+        if(!ui->widthLineEdit->text().isEmpty()){
+            newProfile.width=ui->widthLineEdit->text();
+        }else{
+            newProfile.width="-1";
+        }
+
+        if(!ui->zoomLineEdit->text().isEmpty()){
+            newProfile.zoom=ui->zoomLineEdit->text();
+        }else{
+            newProfile.zoom="-1";
+        }
+
+        newProfile.layer=ui->layersComboBox->currentText();
+
+        for (int i = 0; i < ui->rotationsListWidget->count(); ++i) {
+            QString r=ui->rotationsListWidget->item(i)->text();
+            newProfile.profileRotations<<r;
+        }
+
+        listOfProfiles<<newProfile;
+        ui->profilesComboBox->addItem(newProfile.profileName);
+        currentProfile=newProfile;
+        ui->profilesComboBox->setCurrentIndex(ui->profilesComboBox->count()-1);
+
+    }
+
 
 }
