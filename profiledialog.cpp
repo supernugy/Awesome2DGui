@@ -32,3 +32,7 @@ void ProfileDialog::on_cancelButton_clicked()
 {
     this->reject();
 }
+
+void ProfileDialog::setName(QString name){
+    ui->profileNameLineEdit->setText(name);
+}

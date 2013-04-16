@@ -17,6 +17,8 @@ public:
 
     void setMessageLabel(QString message);
 
+    void setName(QString name);
+
     QString profileName;
     
 private slots:

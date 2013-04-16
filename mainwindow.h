@@ -36,6 +36,8 @@ private slots:
 
     void on_addProfileButton_clicked();
 
+    void on_editProfileButton_clicked();
+
 private:
 
     void generateGuiProfileFile();
@@ -47,6 +49,10 @@ private:
     void loadCurrentProfileToGui();
 
     void addProfileToFile(profile newProfile);
+
+    void addAllProfilesToFile();
+
+    void updateProfileCombobox(int selectIndex);
 
     Ui::MainWindow *ui;
 };

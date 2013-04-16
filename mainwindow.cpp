@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
         loadProfilesFromFile();
     }
     for (int i = 0; i < listOfProfiles.size(); ++i) {
-        //ui->profilesListWidget->addItem(listOfProfiles.value(i).profileName);
         ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
     }
     ui->profilesComboBox->setCurrentIndex(0);
@@ -138,6 +137,30 @@ void MainWindow::addProfileToFile(profile newProfile){
     stream<<"end"<<"\n"<<"\n";
     stream.flush();
     profilesFile.close();
+}
+
+void MainWindow::addAllProfilesToFile(){
+    profilesFile.open(QIODevice::WriteOnly);
+    QTextStream stream(&profilesFile);
+    for (int i = 0; i < listOfProfiles.size(); ++i) {
+        stream<<listOfProfiles.value(i).profileName+"\nAngle\n"+listOfProfiles.value(i).angle+"\nHeight\n"
+                +listOfProfiles.value(i).height+"\nWidth\n"+listOfProfiles.value(i).width+"\nZoom\n"+listOfProfiles.value(i).zoom+"\n"
+                +"Layer\n"+listOfProfiles.value(i).layer+"\n"+"rotations"+"\n";
+        for (int var = 0; var < listOfProfiles.value(i).profileRotations.size(); ++var) {
+            stream<<listOfProfiles.value(i).profileRotations.value(var)+"\n";
+        }
+        stream<<"end"<<"\n"<<"\n";
+    }
+    stream.flush();
+    profilesFile.close();
+}
+
+void MainWindow::updateProfileCombobox(int selectIndex){
+    ui->profilesComboBox->clear();
+    for (int i = 0; i < listOfProfiles.size(); ++i) {
+        ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
+    }
+    ui->profilesComboBox->setCurrentIndex(selectIndex);
 }
 
 
@@ -277,7 +300,9 @@ void MainWindow::on_addProfileButton_clicked()
             newProfile.zoom="-1";
         }
 
-        newProfile.layer=ui->layersComboBox->currentIndex();
+        QString layerIndex;
+        layerIndex.setNum(ui->layersComboBox->currentIndex());
+        newProfile.layer=layerIndex;
 
         for (int i = 0; i < ui->rotationsListWidget->count(); ++i) {
             QString r=ui->rotationsListWidget->item(i)->text();
@@ -299,6 +324,9 @@ void MainWindow::on_editProfileButton_clicked()
     ProfileDialog *pd=new ProfileDialog(this);
     pd->setMessageLabel("Do you want to edit profile with current parameters?");
     pd->setWindowTitle("Edit profile");
+    QString oldName=currentProfile.profileName;
+    int currentComboBoxIndex=ui->profilesComboBox->currentIndex();
+    pd->setName(oldName);
     pd->show();
 
     if(pd->exec()==QDialog::Accepted){
@@ -328,13 +356,25 @@ void MainWindow::on_editProfileButton_clicked()
             currentProfile.zoom="-1";
         }
 
-        currentProfile.layer=ui->layersComboBox->currentIndex();
+        QString layerIndex;
+        layerIndex.setNum(ui->layersComboBox->currentIndex());
+        currentProfile.layer=layerIndex;
 
+        currentProfile.profileRotations.clear();
         for (int i = 0; i < ui->rotationsListWidget->count(); ++i) {
             QString r=ui->rotationsListWidget->item(i)->text();
             currentProfile.profileRotations<<r;
         }
-        //TO DO - change in file
+        loadCurrentProfileToGui();
+        for (int i = 0; i < listOfProfiles.size(); ++i) {
+            if(listOfProfiles.value(i).profileName==oldName){
+                listOfProfiles.replace(i,currentProfile);
+                break;
+            }
+        }
+        //listOfProfiles<<currentProfile;
+        updateProfileCombobox(currentComboBoxIndex);
+        addAllProfilesToFile();
     }
 
 }
