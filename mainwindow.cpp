@@ -293,3 +293,48 @@ void MainWindow::on_addProfileButton_clicked()
 
 
 }
+
+void MainWindow::on_editProfileButton_clicked()
+{
+    ProfileDialog *pd=new ProfileDialog(this);
+    pd->setMessageLabel("Do you want to edit profile with current parameters?");
+    pd->setWindowTitle("Edit profile");
+    pd->show();
+
+    if(pd->exec()==QDialog::Accepted){
+        currentProfile.profileName=pd->profileName;
+
+        if(!ui->angleLineEdit->text().isEmpty()){
+            currentProfile.angle=ui->angleLineEdit->text();
+        }else{
+            currentProfile.angle="-1";
+        }
+
+        if(!ui->heightLineEdit->text().isEmpty()){
+            currentProfile.height=ui->heightLineEdit->text();
+        }else{
+            currentProfile.height="-1";
+        }
+
+        if(!ui->widthLineEdit->text().isEmpty()){
+            currentProfile.width=ui->widthLineEdit->text();
+        }else{
+            currentProfile.width="-1";
+        }
+
+        if(!ui->zoomLineEdit->text().isEmpty()){
+            currentProfile.zoom=ui->zoomLineEdit->text();
+        }else{
+            currentProfile.zoom="-1";
+        }
+
+        currentProfile.layer=ui->layersComboBox->currentIndex();
+
+        for (int i = 0; i < ui->rotationsListWidget->count(); ++i) {
+            QString r=ui->rotationsListWidget->item(i)->text();
+            currentProfile.profileRotations<<r;
+        }
+        //TO DO - change in file
+    }
+
+}
