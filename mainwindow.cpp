@@ -245,7 +245,7 @@ void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &arg1)
 void MainWindow::on_addProfileButton_clicked()
 {
     ProfileDialog *pd=new ProfileDialog(this);
-    pd->setMessageLabel("Write new profile name");
+    pd->setMessageLabel("Do you want to add new profile with current parameters?");
     pd->setWindowTitle("Add new profile");
     pd->show();
 
