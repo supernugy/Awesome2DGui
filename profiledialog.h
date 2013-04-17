@@ -19,6 +19,8 @@ public:
 
     void setName(QString name);
 
+    void setLineEditVisible(bool en);
+
     QString profileName;
     
 private slots:

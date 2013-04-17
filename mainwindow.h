@@ -38,6 +38,8 @@ private slots:
 
     void on_editProfileButton_clicked();
 
+    void on_removeProfileButton_clicked();
+
 private:
 
     void generateGuiProfileFile();

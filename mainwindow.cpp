@@ -372,9 +372,31 @@ void MainWindow::on_editProfileButton_clicked()
                 break;
             }
         }
-        //listOfProfiles<<currentProfile;
         updateProfileCombobox(currentComboBoxIndex);
         addAllProfilesToFile();
     }
 
+}
+
+void MainWindow::on_removeProfileButton_clicked()
+{
+    ProfileDialog *pd=new ProfileDialog(this);
+    pd->setMessageLabel("Do you want remove current profile?");
+    pd->setWindowTitle("Remove profile");
+    pd->show();
+    pd->setLineEditVisible(false);
+    if(pd->exec()==QDialog::Accepted){
+        QString oldName=currentProfile.profileName;
+        for (int i = 0; i < listOfProfiles.size(); ++i) {
+            if(listOfProfiles.value(i).profileName==oldName){
+                listOfProfiles.removeAt(i);
+                break;
+            }
+        }
+        currentProfile=listOfProfiles.value(0);
+        updateProfileCombobox(0);
+        loadCurrentProfileToGui();
+        addAllProfilesToFile();
+
+    }
 }

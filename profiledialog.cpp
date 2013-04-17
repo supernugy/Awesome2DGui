@@ -22,8 +22,10 @@ void ProfileDialog::setMessageLabel(QString message){
 
 void ProfileDialog::on_okButton_clicked()
 {
-    if(!ui->profileNameLineEdit->text().isEmpty()){
+    if(!ui->profileNameLineEdit->text().isEmpty()&&ui->profileNameLineEdit->isVisible()){
         profileName=ui->profileNameLineEdit->text();
+        this->accept();
+    }else if(!ui->profileNameLineEdit->isVisible()){
         this->accept();
     }
 }
@@ -35,4 +37,9 @@ void ProfileDialog::on_cancelButton_clicked()
 
 void ProfileDialog::setName(QString name){
     ui->profileNameLineEdit->setText(name);
+}
+
+void ProfileDialog::setLineEditVisible(bool en){
+    ui->profileNameLineEdit->setVisible(en);
+    ui->profileNameLabel->setVisible(en);
 }
