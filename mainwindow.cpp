@@ -18,13 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setValidators();
-
     order = Qt::AscendingOrder;
 
     this->setWindowTitle("Prerenderer");
 
     profilesFile=new QFile("guiProfiles.txt");
+
+    setValidators();
+
     if (!profilesFile->exists())
     {
         generateGuiProfileFile();
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
     }
+
     ui->profilesComboBox->setCurrentIndex(0);
 
     currentProfile = listOfProfiles.value(0);
@@ -45,53 +47,90 @@ MainWindow::MainWindow(QWidget *parent) :
     loadCurrentProfileToGui();
 }
 
+/**
+ * @brief Sets input validators to lineEdits in gui
+ */
 void MainWindow::setValidators(){
-    QIntValidator *angleInputRange = new QIntValidator(0,90,this);
-    QIntValidator *rotationInputRange = new QIntValidator(0,359,this);
-    QIntValidator *intInputRange = new QIntValidator(this);
-    QDoubleValidator *zoomInputRange = new QDoubleValidator(0.01,10.00,2,this);
-    ui->widthLineEdit->setValidator(intInputRange);
-    ui->heightLineEdit->setValidator(intInputRange);
-    ui->angleLineEdit->setValidator(angleInputRange);
-    ui->addRotationLineEdit->setValidator(rotationInputRange);
-    ui->zoomLineEdit->setValidator(zoomInputRange);
-}
 
-void MainWindow::loadProfilesFromFile(){
-//    QFile profilesFile("guiProfiles.txt");
+    QIntValidator *angleInputRange    = new QIntValidator(0,90,this);
+
+    QIntValidator *rotationInputRange = new QIntValidator(0,359,this);
+
+    QIntValidator *intInputRange      = new QIntValidator(this);
+
+    QDoubleValidator *zoomInputRange  = new QDoubleValidator(0.01,10.00,2,this);
+
+    ui->widthLineEdit->setValidator(intInputRange);
+
+    ui->heightLineEdit->setValidator(intInputRange);
+
+    ui->angleLineEdit->setValidator(angleInputRange);
+
+    ui->addRotationLineEdit->setValidator(rotationInputRange);
+
+    ui->zoomLineEdit->setValidator(zoomInputRange);
+
+}
+/**
+ * @brief Loads all profiles from "guiProfiles.txt" into the listOfProfiles
+ */
+void MainWindow::loadProfilesFromFile()
+{
+
     profilesFile->open(QIODevice::ReadOnly);
+
     QTextStream stream(profilesFile);
-    QString line= stream.readLine();
-    while(!stream.atEnd()){
+
+    QString line = stream.readLine();
+
+    while(!stream.atEnd())
+    {
+
         profile readProfile;
-        readProfile.profileName=line;
+
+        readProfile.profileName = line;
+
         stream.readLine();
-        readProfile.angle=stream.readLine();
+        readProfile.angle   = stream.readLine();
+
         stream.readLine();
-        readProfile.height=stream.readLine();
+        readProfile.height  = stream.readLine();
+
         stream.readLine();
-        readProfile.width=stream.readLine();
+        readProfile.width   = stream.readLine();
+
         stream.readLine();
-        readProfile.zoom=stream.readLine();
+        readProfile.zoom    = stream.readLine();
+
         stream.readLine();
-        readProfile.layer=stream.readLine();
+        readProfile.layer   = stream.readLine();
+
         stream.readLine();
-        line=stream.readLine();
+        line = stream.readLine();
+
         QStringList readRotations;
-        while(line!="end"){
-            readRotations<<line;
-            line=stream.readLine();
+
+        while(line != "end")
+        {
+            readRotations << line;
+            line = stream.readLine();
         }
+
         stream.readLine();
-        line=stream.readLine();
-        readProfile.profileRotations=readRotations;
-        listOfProfiles<<readProfile;
+
+        line = stream.readLine();
+
+        readProfile.profileRotations = readRotations;
+
+        listOfProfiles << readProfile;
+
     }
+
     profilesFile->close();
+
 }
 
 void MainWindow::generateGuiProfileFile(){
-//    QFile profilesFile("guiProfiles.txt");
     profilesFile->open(QIODevice::WriteOnly);
     QTextStream stream(profilesFile);
     profile defaultProfile;
@@ -134,7 +173,6 @@ void MainWindow::loadCurrentProfileToGui(){
 
 void MainWindow::addProfileToFile(profile newProfile){
 
-//    QFile profilesFile("guiProfiles.txt");
     profilesFile->open(QIODevice::Append);
     QTextStream stream(profilesFile);
     stream<<newProfile.profileName+"\nAngle\n"+newProfile.angle+"\nHeight\n"
@@ -149,7 +187,6 @@ void MainWindow::addProfileToFile(profile newProfile){
 }
 
 void MainWindow::addAllProfilesToFile(){
-//    QFile profilesFile("guiProfiles.txt");
     profilesFile->open(QIODevice::WriteOnly);
     QTextStream stream(profilesFile);
     for (int i = 0; i < listOfProfiles.size(); ++i) {
