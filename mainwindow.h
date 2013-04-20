@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFile>
 
 struct profile{
     QString profileName, height, width, angle, zoom, layer;
@@ -41,6 +42,8 @@ private slots:
     void on_removeProfileButton_clicked();
 
 private:
+
+    QFile *profilesFile;
 
     Qt::SortOrder order;
 

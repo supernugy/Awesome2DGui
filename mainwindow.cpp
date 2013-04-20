@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->setWindowTitle("Prerenderer");
 
-    QFile profilesFile("guiProfiles.txt");
-    if (!profilesFile.exists())
+    profilesFile=new QFile("guiProfiles.txt");
+    if (!profilesFile->exists())
     {
         generateGuiProfileFile();
     }
@@ -58,9 +58,9 @@ void MainWindow::setValidators(){
 }
 
 void MainWindow::loadProfilesFromFile(){
-    QFile profilesFile("guiProfiles.txt");
-    profilesFile.open(QIODevice::ReadOnly);
-    QTextStream stream(&profilesFile);
+//    QFile profilesFile("guiProfiles.txt");
+    profilesFile->open(QIODevice::ReadOnly);
+    QTextStream stream(profilesFile);
     QString line= stream.readLine();
     while(!stream.atEnd()){
         profile readProfile;
@@ -87,13 +87,13 @@ void MainWindow::loadProfilesFromFile(){
         readProfile.profileRotations=readRotations;
         listOfProfiles<<readProfile;
     }
-    profilesFile.close();
+    profilesFile->close();
 }
 
 void MainWindow::generateGuiProfileFile(){
-    QFile profilesFile("guiProfiles.txt");
-    profilesFile.open(QIODevice::WriteOnly);
-    QTextStream stream(&profilesFile);
+//    QFile profilesFile("guiProfiles.txt");
+    profilesFile->open(QIODevice::WriteOnly);
+    QTextStream stream(profilesFile);
     profile defaultProfile;
     defaultProfile.profileName="Default";
     defaultProfile.angle="45";
@@ -113,7 +113,7 @@ void MainWindow::generateGuiProfileFile(){
     }
     stream<<"end"<<"\n"<<"\n";
     stream.flush();
-    profilesFile.close();
+    profilesFile->close();
 }
 
 void MainWindow::loadCurrentProfileToGui(){
@@ -134,9 +134,9 @@ void MainWindow::loadCurrentProfileToGui(){
 
 void MainWindow::addProfileToFile(profile newProfile){
 
-    QFile profilesFile("guiProfiles.txt");
-    profilesFile.open(QIODevice::Append);
-    QTextStream stream(&profilesFile);
+//    QFile profilesFile("guiProfiles.txt");
+    profilesFile->open(QIODevice::Append);
+    QTextStream stream(profilesFile);
     stream<<newProfile.profileName+"\nAngle\n"+newProfile.angle+"\nHeight\n"
             +newProfile.height+"\nWidth\n"+newProfile.width+"\nZoom\n"+newProfile.zoom+"\n"
             +"Layer\n"+newProfile.layer+"\n"+"rotations"+"\n";
@@ -145,13 +145,13 @@ void MainWindow::addProfileToFile(profile newProfile){
     }
     stream<<"end"<<"\n"<<"\n";
     stream.flush();
-    profilesFile.close();
+    profilesFile->close();
 }
 
 void MainWindow::addAllProfilesToFile(){
-    QFile profilesFile("guiProfiles.txt");
-    profilesFile.open(QIODevice::WriteOnly);
-    QTextStream stream(&profilesFile);
+//    QFile profilesFile("guiProfiles.txt");
+    profilesFile->open(QIODevice::WriteOnly);
+    QTextStream stream(profilesFile);
     for (int i = 0; i < listOfProfiles.size(); ++i) {
         stream<<listOfProfiles.value(i).profileName+"\nAngle\n"+listOfProfiles.value(i).angle+"\nHeight\n"
                 +listOfProfiles.value(i).height+"\nWidth\n"+listOfProfiles.value(i).width+"\nZoom\n"+listOfProfiles.value(i).zoom+"\n"
@@ -162,7 +162,7 @@ void MainWindow::addAllProfilesToFile(){
         stream<<"end"<<"\n"<<"\n";
     }
     stream.flush();
-    profilesFile.close();
+    profilesFile->close();
 }
 
 void MainWindow::updateProfileCombobox(int selectIndex){
