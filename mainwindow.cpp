@@ -35,9 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
         loadProfilesFromFile();
     }
 
-    for (int i = 0; i < listOfProfiles.size(); ++i)
+    for (int profileIndex = 0; profileIndex < listOfProfiles.size(); ++profileIndex)
     {
-        ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
+        ui->profilesComboBox->addItem(listOfProfiles.value(profileIndex).profileName);
     }
 
     ui->profilesComboBox->setCurrentIndex(0);
@@ -130,84 +130,179 @@ void MainWindow::loadProfilesFromFile()
 
 }
 
-void MainWindow::generateGuiProfileFile(){
+/**
+ * @brief Generates "guiProfiles.txt" file with a default profile
+ */
+void MainWindow::generateGuiProfileFile()
+{
+
     profilesFile->open(QIODevice::WriteOnly);
+
     QTextStream stream(profilesFile);
+
     profile defaultProfile;
-    defaultProfile.profileName="Default";
-    defaultProfile.angle="45";
-    defaultProfile.height="48";
-    defaultProfile.width="64";
-    defaultProfile.zoom="0.08";
-    defaultProfile.layer="0";
+
+    defaultProfile.profileName = "Default";
+
+    defaultProfile.angle       = "45";
+
+    defaultProfile.height      = "48";
+
+    defaultProfile.width       = "64";
+
+    defaultProfile.zoom        = "0.08";
+
+    defaultProfile.layer       = "0";
+
     QStringList defaultRotations;
-    defaultRotations<<"0"<<"45"<<"90"<<"135"<<"180"<<"225"<<"270"<<"315";
-    defaultProfile.profileRotations=defaultRotations;
-    listOfProfiles<<defaultProfile;
-    stream<<defaultProfile.profileName+"\nAngle\n"+defaultProfile.angle+"\nHeight\n"
-            +defaultProfile.height+"\nWidth\n"+defaultProfile.width+"\nZoom\n"+defaultProfile.zoom+"\n"
-            +"Layer\n"+defaultProfile.layer+"\n"+"rotations"+"\n";
-    for (int var = 0; var < defaultProfile.profileRotations.size(); ++var) {
-        stream<<defaultProfile.profileRotations.value(var)+"\n";
+
+    defaultRotations << "0"   << "45"  << "90"  << "135"
+                     << "180" << "225" << "270" << "315";
+
+    defaultProfile.profileRotations = defaultRotations;
+
+    listOfProfiles << defaultProfile;
+
+    stream << defaultProfile.profileName + "\nAngle\n"
+            + defaultProfile.angle       + "\nHeight\n"
+            + defaultProfile.height      + "\nWidth\n"
+            + defaultProfile.width       + "\nZoom\n"
+            + defaultProfile.zoom        + "\nLayer\n"
+            + defaultProfile.layer       + "\nrotations\n";
+
+    for (int rotationIndex = 0; rotationIndex < defaultProfile.profileRotations.size(); ++rotationIndex)
+    {
+        stream << defaultProfile.profileRotations.value(rotationIndex) + "\n";
     }
-    stream<<"end"<<"\n"<<"\n";
+
+    stream << "end" << "\n" << "\n";
+
     stream.flush();
+
     profilesFile->close();
+
 }
 
+/**
+ * @brief Sets values in lineEdits according to values in currentProfile
+ */
 void MainWindow::loadCurrentProfileToGui(){
+
     ui->rotationsListWidget->clear();
-    for (int i = 0; i < currentProfile.profileRotations.size(); ++i) {
+
+    for (int rotationIndex = 0; rotationIndex < currentProfile.profileRotations.size(); ++rotationIndex)
+    {
         QListWidgetItem *item = new QListWidgetItem;
-        item->setData(Qt::DisplayRole, currentProfile.profileRotations.value(i).toInt());
+
+        item->setData(Qt::DisplayRole, currentProfile.profileRotations.value(rotationIndex).toInt());
+
         ui->rotationsListWidget->addItem(item);
     }
-    if(currentProfile.angle!="-1") {ui->angleLineEdit->setText(currentProfile.angle);}
-    if(currentProfile.height!="-1") {ui->heightLineEdit->setText(currentProfile.height);}
-    if(currentProfile.width!="-1") {ui->widthLineEdit->setText(currentProfile.width);}
-    if(currentProfile.zoom!="-1") {ui->zoomLineEdit->setText(currentProfile.zoom);}
+
+    if(currentProfile.angle != "-1")
+    {
+        ui->angleLineEdit->setText(currentProfile.angle);
+    }
+
+    if(currentProfile.height != "-1")
+    {
+        ui->heightLineEdit->setText(currentProfile.height);
+    }
+
+    if(currentProfile.width != "-1")
+    {
+        ui->widthLineEdit->setText(currentProfile.width);
+    }
+
+    if(currentProfile.zoom != "-1")
+    {
+        ui->zoomLineEdit->setText(currentProfile.zoom);
+    }
+
     ui->layersComboBox->setCurrentIndex(currentProfile.layer.toInt());
+
     ui->rotationsListWidget->setSortingEnabled(true);
+
     ui->rotationsListWidget->sortItems(order);
 }
 
+/**
+ * @brief Adds new profile to the end of an existing "guiProfiles.txt" file
+ * @param newProfile - New profile with new parameters
+ */
 void MainWindow::addProfileToFile(profile newProfile){
 
     profilesFile->open(QIODevice::Append);
+
     QTextStream stream(profilesFile);
-    stream<<newProfile.profileName+"\nAngle\n"+newProfile.angle+"\nHeight\n"
-            +newProfile.height+"\nWidth\n"+newProfile.width+"\nZoom\n"+newProfile.zoom+"\n"
-            +"Layer\n"+newProfile.layer+"\n"+"rotations"+"\n";
-    for (int var = 0; var < newProfile.profileRotations.size(); ++var) {
-        stream<<newProfile.profileRotations.value(var)+"\n";
+
+    stream << newProfile.profileName + "\nAngle\n"
+            + newProfile.angle       + "\nHeight\n"
+            + newProfile.height      + "\nWidth\n"
+            + newProfile.width       + "\nZoom\n"
+            + newProfile.zoom        + "\nLayer\n"
+            + newProfile.layer       + "\nrotations\n";
+
+    for (int rotationIndex = 0; rotationIndex < newProfile.profileRotations.size(); ++rotationIndex)
+    {
+        stream << newProfile.profileRotations.value(rotationIndex) + "\n";
     }
-    stream<<"end"<<"\n"<<"\n";
+
+    stream << "end" << "\n" << "\n";
+
     stream.flush();
+
     profilesFile->close();
+
 }
 
+/**
+ * @brief Rewrites whole "guiProfiles.txt" file with all profiles in listOfProfiles
+ */
 void MainWindow::addAllProfilesToFile(){
+
     profilesFile->open(QIODevice::WriteOnly);
+
     QTextStream stream(profilesFile);
-    for (int i = 0; i < listOfProfiles.size(); ++i) {
-        stream<<listOfProfiles.value(i).profileName+"\nAngle\n"+listOfProfiles.value(i).angle+"\nHeight\n"
-                +listOfProfiles.value(i).height+"\nWidth\n"+listOfProfiles.value(i).width+"\nZoom\n"+listOfProfiles.value(i).zoom+"\n"
-                +"Layer\n"+listOfProfiles.value(i).layer+"\n"+"rotations"+"\n";
-        for (int var = 0; var < listOfProfiles.value(i).profileRotations.size(); ++var) {
-            stream<<listOfProfiles.value(i).profileRotations.value(var)+"\n";
+
+    for (int profileIndex = 0; profileIndex < listOfProfiles.size(); ++profileIndex)
+    {
+        stream << listOfProfiles.value(profileIndex).profileName + "\nAngle\n"
+                + listOfProfiles.value(profileIndex).angle       + "\nHeight\n"
+                + listOfProfiles.value(profileIndex).height      + "\nWidth\n"
+                + listOfProfiles.value(profileIndex).width       + "\nZoom\n"
+                + listOfProfiles.value(profileIndex).zoom        + "\nLayer\n"
+                + listOfProfiles.value(profileIndex).layer       + "\nrotations\n";
+
+        for (int rotationIndex = 0; rotationIndex < listOfProfiles.value(profileIndex).profileRotations.size(); ++rotationIndex)
+        {
+            stream << listOfProfiles.value(profileIndex).profileRotations.value(rotationIndex) + "\n";
         }
-        stream<<"end"<<"\n"<<"\n";
+
+        stream << "end" << "\n" << "\n";
     }
+
     stream.flush();
+
     profilesFile->close();
+
 }
 
-void MainWindow::updateProfileCombobox(int selectIndex){
+/**
+ * @brief Updates profile comboBox by clearing it and than adding all profile names into it
+ * @param selectedIndex - comboBox index that will be set as current
+ */
+void MainWindow::updateProfileCombobox(int selectedIndex){
+
     ui->profilesComboBox->clear();
-    for (int i = 0; i < listOfProfiles.size(); ++i) {
-        ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
+
+    for (int profileIndex = 0; profileIndex < listOfProfiles.size(); ++profileIndex)
+    {
+        ui->profilesComboBox->addItem(listOfProfiles.value(profileIndex).profileName);
     }
-    ui->profilesComboBox->setCurrentIndex(selectIndex);
+
+    ui->profilesComboBox->setCurrentIndex(selectedIndex);
+
 }
 
 
@@ -218,58 +313,74 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_objSelectButton_clicked()
 {
+
     QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),"/path/to/file/",tr("Obj Files (*.obj)"));
+
     ui->objectPathTextField->setText(objName);
+
 }
 
 void MainWindow::on_pngSelectButton_clicked()
 {
+
     QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),"/path/to/file/",tr("Png Files (*.png)"));
+
     ui->texturePathTextField->setText(pngName);
+
 }
 
 void MainWindow::on_renderButton_clicked()
 {
-    QStringList arguments;
-    QString texture, width, height, angle, objName, zoom;
 
-    arguments<<"render";
+    QStringList arguments("render");
 
-    if(!ui->texturePathTextField->text().isEmpty()){
-        texture="--texture="+ui->texturePathTextField->text();
-        arguments<<texture;
-    }
-    if(!ui->widthLineEdit->text().isEmpty()){
-        width="--width="+ui->widthLineEdit->text();
-        arguments<<width;
-    }
-    if(!ui->heightLineEdit->text().isEmpty()){
-        height="--height="+ui->heightLineEdit->text();
-        arguments<<height;
-    }
-    if(!ui->angleLineEdit->text().isEmpty()){
-        angle="--angle="+ui->angleLineEdit->text();
-        arguments<<angle;
+    //QString texture, width, height, angle, objName, zoom;
+
+    //arguments<<"render";
+
+    if(!ui->texturePathTextField->text().isEmpty())
+    {
+        arguments<<"--texture="+ui->texturePathTextField->text();
     }
 
-    if(!ui->zoomLineEdit->text().isEmpty()){
-        zoom="--zoom="+ui->zoomLineEdit->text();
-        arguments<<zoom;
+    if(!ui->widthLineEdit->text().isEmpty())
+    {
+        arguments<<"--width="+ui->widthLineEdit->text();
     }
 
-    if(!ui->objectPathTextField->text().isEmpty()){
-        objName=ui->objectPathTextField->text();
-        arguments<<objName;
-    }else{
-        ui->label->setText("Select obj. file");
+    if(!ui->heightLineEdit->text().isEmpty())
+    {
+        arguments<<"--height="+ui->heightLineEdit->text();
+    }
+
+    if(!ui->angleLineEdit->text().isEmpty())
+    {
+        arguments<<"--angle="+ui->angleLineEdit->text();
+    }
+
+    if(!ui->zoomLineEdit->text().isEmpty())
+    {
+        arguments<<"--zoom="+ui->zoomLineEdit->text();
+    }
+
+    if(!ui->objectPathTextField->text().isEmpty())
+    {
+        arguments<<ui->objectPathTextField->text();
+    }
+    else
+    {
+        ui->label->setText("Select .obj file");
         return;
     }
 
-    QProcess *proces = new QProcess(this);
-    proces->start("./prerenderer-debug",arguments);
-    proces->waitForFinished(-1);
+    QProcess proces(this);
+
+    proces.start("./prerenderer-debug",arguments);
+
+    proces.waitForFinished(-1);
 
     ui->label->setText("Done");
+
 }
 
 void MainWindow::on_addRotationButton_clicked()
