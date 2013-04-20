@@ -12,16 +12,11 @@ class ProfileDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit ProfileDialog(QWidget *parent = 0);
+    explicit ProfileDialog(QWidget *parent = 0, const QString& name = "", const QString& message = "", bool setLineEditVisible = true);
+
     ~ProfileDialog();
 
-    void setMessageLabel(QString message);
-
-    void setName(QString name);
-
-    void setLineEditVisible(bool en);
-
-    QString profileName;
+    const QString& getProfileName() const;
     
 private slots:
 
@@ -31,6 +26,8 @@ private slots:
 
 private:
     Ui::ProfileDialog *ui;
+
+    QString selectedProfileName;
 };
 
 #endif // PROFILEDIALOG_H

@@ -4,11 +4,6 @@
 #include <QMainWindow>
 #include <QFile>
 
-struct profile{
-    QString profileName, height, width, angle, zoom, layer;
-    QStringList profileRotations;
-};
-
 namespace Ui {
 class MainWindow;
 }
@@ -33,7 +28,7 @@ private slots:
 
     void on_removeRotationButton_clicked();
 
-    void on_profilesComboBox_currentIndexChanged(const QString &arg1);
+    void on_profilesComboBox_currentIndexChanged(const QString &selectedProfile);
 
     void on_addProfileButton_clicked();
 
@@ -43,13 +38,18 @@ private slots:
 
 private:
 
+    struct Profile{
+        QString profileName, height, width, angle, zoom, layer;
+        QStringList profileRotations;
+    };
+
     QFile *profilesFile;
 
     Qt::SortOrder order;
 
-    QList<profile> listOfProfiles;
+    QList<Profile> listOfProfiles;
 
-    profile currentProfile;
+    Profile currentProfile;
 
     void generateGuiProfileFile();
 
@@ -59,11 +59,11 @@ private:
 
     void loadCurrentProfileToGui();
 
-    void addProfileToFile(profile newProfile);
+    void addProfileToFile(const Profile& newProfile);
 
     void addAllProfilesToFile();
 
-    void updateProfileCombobox(int selectIndex);
+    void updateProfileCombobox(int selectedIndex);
 
     Ui::MainWindow *ui;
 };
