@@ -71,6 +71,7 @@ void MainWindow::setValidators(){
     ui->zoomLineEdit->setValidator(zoomInputRange);
 
 }
+
 /**
  * @brief Loads all profiles from "guiProfiles.txt" into the listOfProfiles
  */
@@ -310,6 +311,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/**
+ * @brief Opens file dialog window that accepts only .obj files
+ */
 void MainWindow::on_objSelectButton_clicked()
 {
 
@@ -319,6 +323,9 @@ void MainWindow::on_objSelectButton_clicked()
 
 }
 
+/**
+ * @brief Opens file dialog window that accepts only .png files
+ */
 void MainWindow::on_pngSelectButton_clicked()
 {
 
@@ -328,6 +335,9 @@ void MainWindow::on_pngSelectButton_clicked()
 
 }
 
+/**
+ * @brief Launches prerenderer with parameters currently displayed in gui
+ */
 void MainWindow::on_renderButton_clicked()
 {
 
@@ -376,6 +386,9 @@ void MainWindow::on_renderButton_clicked()
 
 }
 
+/**
+ * @brief Adds new rotation from lineEdit to the list of rotations of currentProfile
+ */
 void MainWindow::on_addRotationButton_clicked()
 {
     if(!ui->addRotationLineEdit->text().isEmpty())
@@ -397,6 +410,9 @@ void MainWindow::on_addRotationButton_clicked()
     }
 }
 
+/**
+ * @brief Removes rotation selected in rotationsListWidget from currentProfile
+ */
 void MainWindow::on_removeRotationButton_clicked()
 {
     QList<QListWidgetItem *> selectedRotations = ui->rotationsListWidget->selectedItems();
@@ -423,6 +439,10 @@ void MainWindow::on_removeRotationButton_clicked()
 
 }
 
+/**
+ * @brief Changes currentProfile to one selected in comboBox and loads it to the gui
+ * @param selectedProfile - name of profile selected in comboBox
+ */
 void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &selectedProfile)
 {
 
@@ -440,6 +460,10 @@ void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &selected
 
 }
 
+/**
+ * @brief Opens a dialog window. If dialog accepts then it will add new profile with parameters in gui
+ *        to the listOfProfiles as weel as "guiProfiles.txt"
+ */
 void MainWindow::on_addProfileButton_clicked()
 {
 
@@ -489,6 +513,10 @@ void MainWindow::on_addProfileButton_clicked()
 
 }
 
+/**
+ * @brief Opens a dialog window. If dialog accepts then it will edit current profile with parameters in gui
+ *        and apply changes in "guiProfiles.txt"
+ */
 void MainWindow::on_editProfileButton_clicked()
 {
     const QString oldName = currentProfile.profileName;
@@ -546,6 +574,10 @@ void MainWindow::on_editProfileButton_clicked()
 
 }
 
+/**
+ * @brief Opens a dialog window. If dialog accepts then it will remove current profile from listOfProfiles
+ *        as well as from "guiProfiles.txt"
+ */
 void MainWindow::on_removeProfileButton_clicked()
 {
 

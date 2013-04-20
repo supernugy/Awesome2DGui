@@ -12,7 +12,7 @@ class ProfileDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit ProfileDialog(QWidget *parent = 0, const QString& name = "", const QString& message = "", bool setLineEditVisible = true);
+    explicit ProfileDialog(QWidget *parent = 0, const QString& name = "", const QString& message = "", bool setLineEditAndLabelVisible = true);
 
     ~ProfileDialog();
 

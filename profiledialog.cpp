@@ -1,7 +1,7 @@
 #include "profiledialog.h"
 #include "ui_profiledialog.h"
 
-ProfileDialog::ProfileDialog(QWidget *parent,const QString& name, const QString& message, bool setLineEditVisible) :
+ProfileDialog::ProfileDialog(QWidget *parent, const QString& name, const QString& message, bool setLineEditAndLabelVisible) :
     QDialog(parent),
     ui(new Ui::ProfileDialog)
 {
@@ -14,8 +14,8 @@ ProfileDialog::ProfileDialog(QWidget *parent,const QString& name, const QString&
         ui->profileNameLineEdit->setText(name);
     }
 
-    ui->profileNameLineEdit->setVisible(setLineEditVisible);
-    ui->profileNameLabel->setVisible(setLineEditVisible);
+    ui->profileNameLineEdit->setVisible(setLineEditAndLabelVisible);
+    ui->profileNameLabel->setVisible(setLineEditAndLabelVisible);
 
 }
 
@@ -24,17 +24,23 @@ ProfileDialog::~ProfileDialog()
     delete ui;
 }
 
- const QString &ProfileDialog::getProfileName() const
- {
+const QString &ProfileDialog::getProfileName() const
+{
      return selectedProfileName;
- }
+}
 
+/**
+ * @brief If lineEdit is not empty accept else refuse
+ */
 void ProfileDialog::on_okButton_clicked()
 {
-    if(!ui->profileNameLineEdit->text().isEmpty()&&ui->profileNameLineEdit->isVisible()){
-        selectedProfileName=ui->profileNameLineEdit->text();
+    if(!ui->profileNameLineEdit->text().isEmpty() && ui->profileNameLineEdit->isVisible())
+    {
+        selectedProfileName = ui->profileNameLineEdit->text();
         this->accept();
-    }else if(!ui->profileNameLineEdit->isVisible()){
+    }
+    else if(!ui->profileNameLineEdit->isVisible())
+    {
         this->accept();
     }
 }
