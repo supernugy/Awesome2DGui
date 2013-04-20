@@ -42,6 +42,12 @@ private slots:
 
 private:
 
+    Qt::SortOrder order;
+
+    QList<profile> listOfProfiles;
+
+    profile currentProfile;
+
     void generateGuiProfileFile();
 
     void setValidators();

@@ -12,30 +12,36 @@
 #include <fstream>
 #include <iostream>
 
-QFile profilesFile("guiProfiles.txt");
-QList<profile> listOfProfiles;
-profile currentProfile;
-Qt::SortOrder order=Qt::AscendingOrder;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     setValidators();
+
+    order = Qt::AscendingOrder;
+
     this->setWindowTitle("Prerenderer");
 
-    if (!profilesFile.exists()){
+    QFile profilesFile("guiProfiles.txt");
+    if (!profilesFile.exists())
+    {
         generateGuiProfileFile();
-    }else{
+    }
+    else
+    {
         loadProfilesFromFile();
     }
-    for (int i = 0; i < listOfProfiles.size(); ++i) {
+
+    for (int i = 0; i < listOfProfiles.size(); ++i)
+    {
         ui->profilesComboBox->addItem(listOfProfiles.value(i).profileName);
     }
     ui->profilesComboBox->setCurrentIndex(0);
 
-    currentProfile=listOfProfiles.value(0);
+    currentProfile = listOfProfiles.value(0);
+
     loadCurrentProfileToGui();
 }
 
@@ -52,6 +58,7 @@ void MainWindow::setValidators(){
 }
 
 void MainWindow::loadProfilesFromFile(){
+    QFile profilesFile("guiProfiles.txt");
     profilesFile.open(QIODevice::ReadOnly);
     QTextStream stream(&profilesFile);
     QString line= stream.readLine();
@@ -84,6 +91,7 @@ void MainWindow::loadProfilesFromFile(){
 }
 
 void MainWindow::generateGuiProfileFile(){
+    QFile profilesFile("guiProfiles.txt");
     profilesFile.open(QIODevice::WriteOnly);
     QTextStream stream(&profilesFile);
     profile defaultProfile;
@@ -126,6 +134,7 @@ void MainWindow::loadCurrentProfileToGui(){
 
 void MainWindow::addProfileToFile(profile newProfile){
 
+    QFile profilesFile("guiProfiles.txt");
     profilesFile.open(QIODevice::Append);
     QTextStream stream(&profilesFile);
     stream<<newProfile.profileName+"\nAngle\n"+newProfile.angle+"\nHeight\n"
@@ -140,6 +149,7 @@ void MainWindow::addProfileToFile(profile newProfile){
 }
 
 void MainWindow::addAllProfilesToFile(){
+    QFile profilesFile("guiProfiles.txt");
     profilesFile.open(QIODevice::WriteOnly);
     QTextStream stream(&profilesFile);
     for (int i = 0; i < listOfProfiles.size(); ++i) {
