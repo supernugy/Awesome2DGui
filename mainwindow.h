@@ -36,6 +36,8 @@ private slots:
 
     void on_removeProfileButton_clicked();
 
+    void prerendere_finished();
+
 private:
 
     struct Profile{

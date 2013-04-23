@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    profiledialog.cpp
+    profiledialog.cpp \
+    imagedisplayform.cpp
 
 HEADERS  += mainwindow.h \
-    profiledialog.h
+    profiledialog.h \
+    imagedisplayform.h
 
 FORMS    += mainwindow.ui \
-    profiledialog.ui
+    profiledialog.ui \
+    imagedisplayform.ui

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "profiledialog.h"
+#include "imagedisplayform.h"
 #include <QProcess>
 #include <QString>
 #include <QFileDialog>
@@ -376,14 +377,54 @@ void MainWindow::on_renderButton_clicked()
 
     arguments << ui->objectPathTextField->text();
 
-    QProcess proces(this);
+    QProcess *proces = new QProcess(this);
 
-    proces.start("./prerenderer-debug",arguments);
+    QObject::connect(proces,SIGNAL(finished(int)),this,SLOT(prerendere_finished()));
 
-    proces.waitForFinished(-1);
+    proces->start("./prerenderer-debug",arguments);
 
+}
+
+/**
+ * @brief This slot is started after prerenderering .obj file. Shows ImageDisplayForm.
+ */
+void MainWindow::prerendere_finished()
+{
     ui->label->setText("Done");
 
+    QStringList parts = ui->objectPathTextField->text().split("/");
+
+    QString imageDir = parts.at(parts.size()-1);
+
+    parts.clear();
+
+    parts = imageDir.split(".");
+
+    imageDir.clear();
+
+    for (int index = 0; index < parts.size()-1; ++index)
+    {
+       imageDir.append(parts.value(index));
+       imageDir.append(".");
+    }
+
+    imageDir.chop(1);
+
+    imageDir.append("_prerender");
+
+    QString pathToImageDir;
+
+    pathToImageDir = QApplication::applicationDirPath();
+
+    pathToImageDir.append("/");
+
+    pathToImageDir.append(imageDir);
+
+    pathToImageDir.append("/");
+
+    ImageDisplayForm *displayForm = new ImageDisplayForm(0,pathToImageDir);
+
+    displayForm->show();
 }
 
 /**
@@ -420,7 +461,7 @@ void MainWindow::on_removeRotationButton_clicked()
     for (int selectedRotationIndex = 0; selectedRotationIndex < selectedRotations.size(); ++selectedRotationIndex)
     {
 
-        for (int rotationIndex = 0; rotationIndex < currentProfile.profileRotations.length(); ++rotationIndex)
+        for (int rotationIndex = 0; rotationIndex < currentProfile.profileRotations.size(); ++rotationIndex)
         {
 
             QString item=selectedRotations.value(selectedRotationIndex)->text();
