@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>437</width>
-    <height>418</height>
+    <width>801</width>
+    <height>692</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -62,10 +62,24 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Height:</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="2">
       <widget class="QLineEdit" name="heightLineEdit">
        <property name="inputMask">
         <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Angle view:</string>
        </property>
       </widget>
      </item>
@@ -76,45 +90,31 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
+     <item row="0" column="3">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Width:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Height:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Angle:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Zoom:</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="4">
-      <widget class="QLineEdit" name="zoomLineEdit">
+      <widget class="QLineEdit" name="widthLineEdit">
        <property name="inputMask">
         <string/>
        </property>
       </widget>
      </item>
      <item row="1" column="4">
-      <widget class="QLineEdit" name="widthLineEdit">
+      <widget class="QLineEdit" name="zoomLineEdit">
        <property name="inputMask">
         <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Zoom:</string>
        </property>
       </widget>
      </item>
@@ -298,7 +298,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>437</width>
+     <width>801</width>
      <height>25</height>
     </rect>
    </property>
