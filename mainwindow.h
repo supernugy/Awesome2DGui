@@ -60,7 +60,7 @@ private:
         QString width;
         QString angle;
         QString zoom;
-        QString layer;
+        QStringList listOfLayers;
         QStringList profileRotations;
     };
 

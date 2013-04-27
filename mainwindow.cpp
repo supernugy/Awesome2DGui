@@ -24,14 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Prerenderer");
     setValidators();
 
-    if (!profilesFile->exists())
-    {
-        generateGuiProfileFile();
-    }
-    else
-    {
-        loadProfilesFromFile();
-    }
+    if (!profilesFile->exists()) { generateGuiProfileFile(); }
+    else { loadProfilesFromFile(); }
 
     for (int profileIndex = 0; profileIndex < listOfProfiles.size(); ++profileIndex)
     {
@@ -66,6 +60,9 @@ void MainWindow::loadProfilesFromFile()
     while(!stream.atEnd())
     {
         Profile readProfile;
+        QStringList readLayers;
+        QStringList readRotations;
+
         readProfile.profileName = line;
         stream.readLine();
         readProfile.angle   = stream.readLine();
@@ -76,12 +73,15 @@ void MainWindow::loadProfilesFromFile()
         stream.readLine();
         readProfile.zoom    = stream.readLine();
         stream.readLine();
-        readProfile.layer   = stream.readLine();
-        stream.readLine();
 
         line = stream.readLine();
-        QStringList readRotations;
+        while(line != "rotations")
+        {
+            readLayers << line;
+            line = stream.readLine();
+        }
 
+        line = stream.readLine();
         while(line != "end")
         {
             readRotations << line;
@@ -90,6 +90,7 @@ void MainWindow::loadProfilesFromFile()
 
         stream.readLine();
         line = stream.readLine();
+        readProfile.listOfLayers     = readLayers;
         readProfile.profileRotations = readRotations;
         listOfProfiles << readProfile;
     }
@@ -107,28 +108,25 @@ void MainWindow::generateGuiProfileFile()
     defaultProfile.height      = "48";
     defaultProfile.width       = "64";
     defaultProfile.zoom        = "0.08";
-    defaultProfile.layer       = "0";
+    defaultProfile.listOfLayers << "diffuse";
 
-    QStringList defaultRotations;
-    defaultRotations << "0"   << "45"  << "90"  << "135"
-                     << "180" << "225" << "270" << "315";
-
-    defaultProfile.profileRotations = defaultRotations;
+    defaultProfile.profileRotations << "0"   << "45"  << "90"  << "135"
+                                    << "180" << "225" << "270" << "315";
     listOfProfiles << defaultProfile;
 
-    stream << defaultProfile.profileName + "\nAngle\n"
-            + defaultProfile.angle       + "\nHeight\n"
-            + defaultProfile.height      + "\nWidth\n"
-            + defaultProfile.width       + "\nZoom\n"
-            + defaultProfile.zoom        + "\nLayer\n"
-            + defaultProfile.layer       + "\nrotations\n";
+    stream << defaultProfile.profileName     + "\nAngle\n"
+            + defaultProfile.angle           + "\nHeight\n"
+            + defaultProfile.height          + "\nWidth\n"
+            + defaultProfile.width           + "\nZoom\n"
+            + defaultProfile.zoom            + "\nLayer\n"
+            + defaultProfile.listOfLayers[0] + "\nrotations\n";
 
     for (int rotationIndex = 0; rotationIndex < defaultProfile.profileRotations.size(); ++rotationIndex)
     {
         stream << defaultProfile.profileRotations[rotationIndex] + "\n";
     }
 
-    stream << "end" << "\n" << "\n";
+    stream << "end\n\n";
     stream.flush();
     profilesFile->close();
 }
@@ -148,7 +146,16 @@ void MainWindow::loadCurrentProfileToGui()
     if(currentProfile.width  != "-1"){ui->widthLineEdit->setText(currentProfile.width);}
     if(currentProfile.zoom   != "-1"){ui->zoomLineEdit->setText(currentProfile.zoom);}
 
-    ui->layersComboBox->setCurrentIndex(currentProfile.layer.toInt());
+    ui->diffuseLayerCheckBox->setChecked(false);
+    ui->normalLayerCheckBox->setChecked(false);
+    ui->offsetLayerCheckBox->setChecked(false);
+
+    for (int layerIndex = 0; layerIndex < currentProfile.listOfLayers.size(); ++layerIndex) {
+        if(currentProfile.listOfLayers[layerIndex] == "diffuse") {ui->diffuseLayerCheckBox->setChecked(true);}
+        if(currentProfile.listOfLayers[layerIndex] == "normal")  {ui->normalLayerCheckBox->setChecked(true);}
+        if(currentProfile.listOfLayers[layerIndex] == "offset")  {ui->offsetLayerCheckBox->setChecked(true);}
+    }
+
     ui->rotationsListWidget->setSortingEnabled(true);
     ui->rotationsListWidget->sortItems(order);
 }
@@ -156,7 +163,6 @@ void MainWindow::loadCurrentProfileToGui()
 void MainWindow::addProfileToFile(const Profile &newProfile)
 {
     if(!profilesFile->open(QIODevice::Append)){
-        // message
         return;
     }
 
@@ -166,8 +172,12 @@ void MainWindow::addProfileToFile(const Profile &newProfile)
             + newProfile.angle       + "\nHeight\n"
             + newProfile.height      + "\nWidth\n"
             + newProfile.width       + "\nZoom\n"
-            + newProfile.zoom        + "\nLayer\n"
-            + newProfile.layer       + "\nrotations\n";
+            + newProfile.zoom        + "\nLayer\n";
+
+    for (int layerIndex = 0; layerIndex < newProfile.listOfLayers.size(); ++layerIndex) {
+        stream << newProfile.listOfLayers[layerIndex] + "\n";
+    }
+    stream << "rotations\n";
 
     for (int rotationIndex = 0; rotationIndex < newProfile.profileRotations.size(); ++rotationIndex)
     {
@@ -190,8 +200,12 @@ void MainWindow::addAllProfilesToFile()
                 + listOfProfiles[profileIndex].angle       + "\nHeight\n"
                 + listOfProfiles[profileIndex].height      + "\nWidth\n"
                 + listOfProfiles[profileIndex].width       + "\nZoom\n"
-                + listOfProfiles[profileIndex].zoom        + "\nLayer\n"
-                + listOfProfiles[profileIndex].layer       + "\nrotations\n";
+                + listOfProfiles[profileIndex].zoom        + "\nLayer\n";
+
+        for (int layerIndex = 0; layerIndex < listOfProfiles[profileIndex].listOfLayers.size(); ++layerIndex) {
+            stream << listOfProfiles[profileIndex].listOfLayers[layerIndex] + "\n";
+        }
+        stream << "rotations\n";
 
         for (int rotationIndex = 0; rotationIndex < listOfProfiles.value(profileIndex).profileRotations.size(); ++rotationIndex)
         {
@@ -248,7 +262,21 @@ void MainWindow::on_renderButton_clicked()
     if(!ui->heightLineEdit->text().isEmpty())       {arguments << "--height="+ui->heightLineEdit->text();}
     if(!ui->angleLineEdit->text().isEmpty())        {arguments << "--angle="+ui->angleLineEdit->text();}
     if(!ui->zoomLineEdit->text().isEmpty())         {arguments << "--zoom="+ui->zoomLineEdit->text();}
-    // add layers
+
+    if(!ui->diffuseLayerCheckBox->isChecked() && !ui->normalLayerCheckBox->isChecked() && !ui->offsetLayerCheckBox->isChecked())
+    {
+        ui->label->setText("Select layers");
+        return;
+    }
+    else
+    {
+        QString layers("--layer=");
+        if (ui->diffuseLayerCheckBox->isChecked()) {layers.append("diffuse,");}
+        if (ui->normalLayerCheckBox->isChecked()) {layers.append("normal,");}
+        if (ui->offsetLayerCheckBox->isChecked()) {layers.append("offset,");}
+        layers.chop(1);
+        arguments << layers;
+    }
     arguments << ui->objectPathTextField->text();
 
     QProcess *proces = new QProcess(this);
@@ -348,10 +376,9 @@ void MainWindow::on_addProfileButton_clicked()
     ui->widthLineEdit->text().isEmpty()  ? newProfile.width  = -1 : newProfile.width  = ui->widthLineEdit->text();
     ui->zoomLineEdit->text().isEmpty()   ? newProfile.zoom   = -1 : newProfile.zoom   = ui->zoomLineEdit->text();
 
-    //EDIT NEEDED
-    QString layerIndex;
-    layerIndex.setNum(ui->layersComboBox->currentIndex());
-    newProfile.layer=layerIndex;
+    if (ui->diffuseLayerCheckBox->isChecked()) {newProfile.listOfLayers << "diffuse";}
+    if (ui->normalLayerCheckBox->isChecked())  {newProfile.listOfLayers << "normal";}
+    if (ui->offsetLayerCheckBox->isChecked())  {newProfile.listOfLayers << "offset";}
 
     for (int index = 0; index < ui->rotationsListWidget->count(); ++index)
     {
@@ -380,12 +407,11 @@ void MainWindow::on_editProfileButton_clicked()
     ui->widthLineEdit->text().isEmpty()  ? currentProfile.width  = -1 : currentProfile.width  = ui->widthLineEdit->text();
     ui->zoomLineEdit->text().isEmpty()   ? currentProfile.zoom   = -1 : currentProfile.zoom   = ui->zoomLineEdit->text();
 
-    //EDIT NEEDED
-    QString layerIndex;
-    layerIndex.setNum(ui->layersComboBox->currentIndex());
-    currentProfile.layer = layerIndex;
-    currentProfile.profileRotations.clear();
+    if (ui->diffuseLayerCheckBox->isChecked()) {currentProfile.listOfLayers << "diffuse";}
+    if (ui->normalLayerCheckBox->isChecked())  {currentProfile.listOfLayers << "normal";}
+    if (ui->offsetLayerCheckBox->isChecked())  {currentProfile.listOfLayers << "offset";}
 
+    currentProfile.profileRotations.clear();
     for (int index = 0; index < ui->rotationsListWidget->count(); ++index)
     {
         currentProfile.profileRotations << ui->rotationsListWidget->item(index)->text();
