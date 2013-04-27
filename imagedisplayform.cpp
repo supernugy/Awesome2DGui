@@ -10,19 +10,12 @@ ImageDisplayForm::ImageDisplayForm(QWidget *parent, QString imagePath) :
     ui(new Ui::ImageDisplayForm)
 {
     ui->setupUi(this);
-
     path=imagePath;
-
     this->setWindowTitle("Image viewer");
-
     QStringList nameFilter("*.png");
-
     QDir directory(imagePath);
-
     QStringList pngFiles = directory.entryList(nameFilter);
-
     ui->imageListWidget->addItems(pngFiles);
-
 }
 
 ImageDisplayForm::~ImageDisplayForm()
@@ -36,6 +29,5 @@ ImageDisplayForm::~ImageDisplayForm()
 void ImageDisplayForm::on_imageListWidget_itemClicked(QListWidgetItem *item)
 {
     const QPixmap pixMap(path+item->text());
-
     ui->imageLabel->setPixmap(pixMap);
 }
