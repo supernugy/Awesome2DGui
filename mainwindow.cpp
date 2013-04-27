@@ -12,6 +12,7 @@
 #include <QList>
 #include <fstream>
 #include <iostream>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -251,8 +252,9 @@ void MainWindow::on_renderButton_clicked()
     arguments << ui->objectPathTextField->text();
 
     QProcess *proces = new QProcess(this);
-    QObject::connect(proces,SIGNAL(finished(int)),this,SLOT(prerendere_finished()));
+    QObject::connect(proces,SIGNAL(finished(int)),this,SLOT(prerenderer_finished()));
     proces->start("./prerenderer-debug",arguments);
+    qDebug()<<"Proces started";
 }
 
 void MainWindow::prerenderer_finished()
