@@ -20,6 +20,7 @@ public:
     
 private slots:
 
+    //! If lineEdit is not empty accept else refuse
     void on_okButton_clicked();
 
     void on_cancelButton_clicked();

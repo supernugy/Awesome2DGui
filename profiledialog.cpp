@@ -6,17 +6,10 @@ ProfileDialog::ProfileDialog(QWidget *parent, const QString& name, const QString
     ui(new Ui::ProfileDialog)
 {
     ui->setupUi(this);
-
     ui->messageLabel->setText(message);
-
-    if(name != "")
-    {
-        ui->profileNameLineEdit->setText(name);
-    }
-
+    ui->profileNameLineEdit->setText(name);
     ui->profileNameLineEdit->setVisible(setLineEditAndLabelVisible);
     ui->profileNameLabel->setVisible(setLineEditAndLabelVisible);
-
 }
 
 ProfileDialog::~ProfileDialog()
@@ -29,9 +22,6 @@ const QString &ProfileDialog::getProfileName() const
      return selectedProfileName;
 }
 
-/**
- * @brief If lineEdit is not empty accept else refuse
- */
 void ProfileDialog::on_okButton_clicked()
 {
     if(!ui->profileNameLineEdit->text().isEmpty() && ui->profileNameLineEdit->isVisible())
