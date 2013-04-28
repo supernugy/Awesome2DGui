@@ -16,6 +16,7 @@ ImageDisplayForm::ImageDisplayForm(QWidget *parent, QString imagePath) :
     QDir directory(imagePath);
     QStringList pngFiles = directory.entryList(nameFilter);
     ui->imageListWidget->addItems(pngFiles);
+    ui->imageListWidget->setMinimumWidth(ui->imageListWidget->sizeHintForColumn(0)+5);
 }
 
 ImageDisplayForm::~ImageDisplayForm()
