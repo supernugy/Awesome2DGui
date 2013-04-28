@@ -238,13 +238,13 @@ MainWindow::~MainWindow()
 void MainWindow::on_objSelectButton_clicked()
 {
     QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),"/path/to/file/",tr("Obj Files (*.obj)"));
-    ui->objectPathTextField->setText(objName);
+    if(objName != "") {ui->objectPathTextField->setText(objName);}
 }
 
 void MainWindow::on_pngSelectButton_clicked()
 {
     QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),"/path/to/file/",tr("Png Files (*.png)"));
-    ui->texturePathTextField->setText(pngName);
+    if(pngName != "") {ui->texturePathTextField->setText(pngName);}
 }
 
 void MainWindow::on_renderButton_clicked()
