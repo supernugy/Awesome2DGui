@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     order(Qt::AscendingOrder),
-    profilesFile (new QFile("guiProfiles.txt"))
+    profilesFile (new QFile("guiProfiles.txt")),
+    lastDirectory(QApplication::applicationDirPath())
 {
     ui->setupUi(this);
     this->setWindowTitle("Prerenderer");
@@ -237,14 +238,34 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_objSelectButton_clicked()
 {
-    QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),"/path/to/file/",tr("Obj Files (*.obj)"));
-    if(objName != "") {ui->objectPathTextField->setText(objName);}
+    QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),lastDirectory,tr("Obj Files (*.obj)"));
+    if(objName != "")
+    {
+        ui->objectPathTextField->setText(objName);
+        QStringList parts = objName.split("/");
+        QString newLastDir("/");
+        for (int index = 0; index < parts.size()-1; ++index)
+        {
+            newLastDir.append(parts[index]+"/");
+        }
+        lastDirectory = newLastDir;
+    }
 }
 
 void MainWindow::on_pngSelectButton_clicked()
 {
-    QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),"/path/to/file/",tr("Png Files (*.png)"));
-    if(pngName != "") {ui->texturePathTextField->setText(pngName);}
+    QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),lastDirectory,tr("Png Files (*.png)"));
+    if(pngName != "")
+    {
+        ui->texturePathTextField->setText(pngName);
+        QStringList parts = pngName.split("/");
+        QString newLastDir("/");
+        for (int index = 0; index < parts.size()-1; ++index)
+        {
+            newLastDir.append(parts[index]+"/");
+        }
+        lastDirectory = newLastDir;
+    }
 }
 
 void MainWindow::on_renderButton_clicked()

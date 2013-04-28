@@ -99,6 +99,8 @@ private:
     Qt::SortOrder order;
 
     QFile *profilesFile;
+
+    QString lastDirectory;
 };
 
 #endif // MAINWINDOW_H
