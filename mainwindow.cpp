@@ -282,7 +282,7 @@ void MainWindow::on_renderButton_clicked()
     QProcess *proces = new QProcess(this);
     QObject::connect(proces,SIGNAL(finished(int)),this,SLOT(prerenderer_finished()));
     proces->start("./prerenderer-debug",arguments);
-    qDebug()<<"Proces started";
+    //qDebug()<<"Proces started";
 }
 
 void MainWindow::prerenderer_finished()
