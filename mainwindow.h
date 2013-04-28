@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFile>
+#include <QStringList>
 
 namespace Ui {
 class MainWindow;
@@ -15,6 +16,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    QStringList getProfileNames();
     
 private slots:
 
@@ -39,17 +42,16 @@ private slots:
      */
     void on_profilesComboBox_currentIndexChanged(const QString &selectedProfile);
 
-    //! Opens a dialog window. If dialog accepts then it will add new profile with parameters in gui to the listOfProfiles as weel as "guiProfiles.txt"
-    void on_addProfileButton_clicked();
-
-    //! Opens a dialog window. If dialog accepts then it will edit current profile with parameters in gui and apply changes in "guiProfiles.txt"
-    void on_editProfileButton_clicked();
-
     //! Opens a dialog window. If dialog accepts then it will remove current profile from listOfProfiles as well as from "guiProfiles.txt"
     void on_removeProfileButton_clicked();
 
     //! This slot is started after prerenderering .obj file. Shows ImageDisplayForm.
     void prerenderer_finished();
+
+    /**
+     * Opens a dialog window with line edit. If profile name in line edit is new the it will create new profile else it will ask for overwrite.
+     */
+    void on_saveProfileButton_clicked();
 
 private:
 

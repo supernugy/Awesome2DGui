@@ -362,77 +362,9 @@ void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &selected
     }
 }
 
-void MainWindow::on_addProfileButton_clicked()
-{
-    ProfileDialog dialogWindow(this, "", "Do you want to add new profile with current parameters?", true);
-    dialogWindow.setWindowTitle("Add new profile");
-    dialogWindow.show();
-    if(dialogWindow.exec() != QDialog::Accepted) {return;}
-
-    Profile newProfile;
-    newProfile.profileName = dialogWindow.getProfileName();
-    ui->angleLineEdit->text().isEmpty()  ? newProfile.angle  = -1 : newProfile.angle  = ui->angleLineEdit->text();
-    ui->heightLineEdit->text().isEmpty() ? newProfile.height = -1 : newProfile.height = ui->heightLineEdit->text();
-    ui->widthLineEdit->text().isEmpty()  ? newProfile.width  = -1 : newProfile.width  = ui->widthLineEdit->text();
-    ui->zoomLineEdit->text().isEmpty()   ? newProfile.zoom   = -1 : newProfile.zoom   = ui->zoomLineEdit->text();
-
-    if (ui->diffuseLayerCheckBox->isChecked()) {newProfile.listOfLayers << "diffuse";}
-    if (ui->normalLayerCheckBox->isChecked())  {newProfile.listOfLayers << "normal";}
-    if (ui->offsetLayerCheckBox->isChecked())  {newProfile.listOfLayers << "offset";}
-
-    for (int index = 0; index < ui->rotationsListWidget->count(); ++index)
-    {
-        newProfile.profileRotations << ui->rotationsListWidget->item(index)->text();
-    }
-
-    listOfProfiles << newProfile;
-    ui->profilesComboBox->addItem(newProfile.profileName);
-    currentProfile = newProfile;
-    ui->profilesComboBox->setCurrentIndex(ui->profilesComboBox->count()-1);
-    addProfileToFile(newProfile);
-}
-
-void MainWindow::on_editProfileButton_clicked()
-{
-    const QString oldName = currentProfile.profileName;
-    int currentComboBoxIndex = ui->profilesComboBox->currentIndex();
-    ProfileDialog dialogWindow(this, oldName, "Do you want to edit profile with current parameters?", true);
-    dialogWindow.setWindowTitle("Edit profile");
-    dialogWindow.show();
-    if(dialogWindow.exec() != QDialog::Accepted) {return;}
-
-    currentProfile.profileName = dialogWindow.getProfileName();
-    ui->angleLineEdit->text().isEmpty()  ? currentProfile.angle  = -1 : currentProfile.angle  = ui->angleLineEdit->text();
-    ui->heightLineEdit->text().isEmpty() ? currentProfile.height = -1 : currentProfile.height = ui->heightLineEdit->text();
-    ui->widthLineEdit->text().isEmpty()  ? currentProfile.width  = -1 : currentProfile.width  = ui->widthLineEdit->text();
-    ui->zoomLineEdit->text().isEmpty()   ? currentProfile.zoom   = -1 : currentProfile.zoom   = ui->zoomLineEdit->text();
-
-    if (ui->diffuseLayerCheckBox->isChecked()) {currentProfile.listOfLayers << "diffuse";}
-    if (ui->normalLayerCheckBox->isChecked())  {currentProfile.listOfLayers << "normal";}
-    if (ui->offsetLayerCheckBox->isChecked())  {currentProfile.listOfLayers << "offset";}
-
-    currentProfile.profileRotations.clear();
-    for (int index = 0; index < ui->rotationsListWidget->count(); ++index)
-    {
-        currentProfile.profileRotations << ui->rotationsListWidget->item(index)->text();
-    }
-    loadCurrentProfileToGui();
-
-    for (int profileIndex = 0; profileIndex < listOfProfiles.size(); ++profileIndex)
-    {
-        if(listOfProfiles.value(profileIndex).profileName == oldName)
-        {
-            listOfProfiles.replace(profileIndex,currentProfile);
-            break;
-        }
-    }
-    updateProfileCombobox(currentComboBoxIndex);
-    addAllProfilesToFile();
-}
-
 void MainWindow::on_removeProfileButton_clicked()
 {
-    ProfileDialog dialogWindow(this, "", "Do you want remove current profile?", false);
+    ProfileDialog dialogWindow(this, "", "Remove current profile?", false);
     dialogWindow.setWindowTitle("Remove profile");
     dialogWindow.show();
     if(dialogWindow.exec() != QDialog::Accepted) {return;}
@@ -450,4 +382,78 @@ void MainWindow::on_removeProfileButton_clicked()
     updateProfileCombobox(0);
     loadCurrentProfileToGui();
     addAllProfilesToFile();
+}
+
+void MainWindow::on_saveProfileButton_clicked()
+{
+    ProfileDialog dialogWindow(this, "", "Save profile?", true);
+    dialogWindow.setWindowTitle("Save profile");
+    dialogWindow.show();
+    if(dialogWindow.exec() != QDialog::Accepted) {return;}
+
+    if(dialogWindow.isOverwriten())
+    {
+        int overwritenProfileIndex = 0;
+        for (int index = 0; index < listOfProfiles.size(); ++index)
+        {
+            //searching for overwriten profile
+            if(listOfProfiles[index].profileName == dialogWindow.getProfileName())
+            {
+                overwritenProfileIndex = index;
+                break;
+            }
+        }
+
+        ui->angleLineEdit->text().isEmpty()   ? listOfProfiles[overwritenProfileIndex].angle   = -1 : listOfProfiles[overwritenProfileIndex].angle   = ui->angleLineEdit->text();
+        ui->heightLineEdit->text().isEmpty()  ? listOfProfiles[overwritenProfileIndex].height  = -1 : listOfProfiles[overwritenProfileIndex].height  = ui->heightLineEdit->text();
+        ui->widthLineEdit->text().isEmpty()   ? listOfProfiles[overwritenProfileIndex].width   = -1 : listOfProfiles[overwritenProfileIndex].width   = ui->widthLineEdit->text();
+        ui->zoomLineEdit->text().isEmpty()    ? listOfProfiles[overwritenProfileIndex].zoom    = -1 : listOfProfiles[overwritenProfileIndex].zoom    = ui->zoomLineEdit->text();
+
+        listOfProfiles[overwritenProfileIndex].listOfLayers.clear();
+        if (ui->diffuseLayerCheckBox->isChecked()) {listOfProfiles[overwritenProfileIndex].listOfLayers << "diffuse";}
+        if (ui->normalLayerCheckBox->isChecked())  {listOfProfiles[overwritenProfileIndex].listOfLayers << "normal";}
+        if (ui->offsetLayerCheckBox->isChecked())  {listOfProfiles[overwritenProfileIndex].listOfLayers << "offset";}
+
+        listOfProfiles[overwritenProfileIndex].profileRotations.clear();
+        for (int index = 0; index < ui->rotationsListWidget->count(); ++index)
+        {
+            listOfProfiles[overwritenProfileIndex].profileRotations << ui->rotationsListWidget->item(index)->text();
+        }
+
+        addAllProfilesToFile();
+    }
+    else
+    {
+        Profile newProfile;
+        newProfile.profileName = dialogWindow.getProfileName();
+
+        ui->angleLineEdit->text().isEmpty()  ? newProfile.angle  = -1 : newProfile.angle  = ui->angleLineEdit->text();
+        ui->heightLineEdit->text().isEmpty() ? newProfile.height = -1 : newProfile.height = ui->heightLineEdit->text();
+        ui->widthLineEdit->text().isEmpty()  ? newProfile.width  = -1 : newProfile.width  = ui->widthLineEdit->text();
+        ui->zoomLineEdit->text().isEmpty()   ? newProfile.zoom   = -1 : newProfile.zoom   = ui->zoomLineEdit->text();
+
+        if (ui->diffuseLayerCheckBox->isChecked()) {newProfile.listOfLayers << "diffuse";}
+        if (ui->normalLayerCheckBox->isChecked())  {newProfile.listOfLayers << "normal";}
+        if (ui->offsetLayerCheckBox->isChecked())  {newProfile.listOfLayers << "offset";}
+
+        for (int index = 0; index < ui->rotationsListWidget->count(); ++index)
+        {
+            newProfile.profileRotations << ui->rotationsListWidget->item(index)->text();
+        }
+
+        listOfProfiles << newProfile;
+        ui->profilesComboBox->addItem(newProfile.profileName);
+        currentProfile = newProfile;
+        ui->profilesComboBox->setCurrentIndex(ui->profilesComboBox->count()-1);
+        addProfileToFile(newProfile);
+    }
+}
+
+QStringList MainWindow::getProfileNames()
+{
+    QStringList list;
+    for (int index = 0; index < listOfProfiles.size(); ++index) {
+        list << listOfProfiles[index].profileName;
+    }
+    return list;
 }
