@@ -247,16 +247,9 @@
          <widget class="QComboBox" name="profilesComboBox"/>
         </item>
         <item>
-         <widget class="QPushButton" name="addProfileButton">
+         <widget class="QPushButton" name="saveProfileButton">
           <property name="text">
-           <string>Add profile</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="editProfileButton">
-          <property name="text">
-           <string>Edit profile</string>
+           <string>Save profile</string>
           </property>
          </widget>
         </item>
