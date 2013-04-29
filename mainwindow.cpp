@@ -276,6 +276,21 @@ void MainWindow::on_renderButton_clicked()
         return;
     }
 
+    if(ui->rotationsListWidget->count() == 0)
+    {
+        ui->label->setText("Add rotations");
+        return;
+    }
+
+    if(!ui->diffuseLayerCheckBox->isChecked()
+            && !ui->normalLayerCheckBox->isChecked()
+            && !ui->offsetLayerCheckBox->isChecked())
+    {
+        ui->label->setText("Select layers");
+        return;
+    }
+
+
     QStringList arguments("render");
 
     if(!ui->texturePathTextField->text().isEmpty()) {arguments << "--texture="+ui->texturePathTextField->text();}
@@ -284,32 +299,23 @@ void MainWindow::on_renderButton_clicked()
     if(!ui->angleLineEdit->text().isEmpty())        {arguments << "--angle="+ui->angleLineEdit->text();}
     if(!ui->zoomLineEdit->text().isEmpty())         {arguments << "--zoom="+ui->zoomLineEdit->text();}
 
-    if(!ui->diffuseLayerCheckBox->isChecked() && !ui->normalLayerCheckBox->isChecked() && !ui->offsetLayerCheckBox->isChecked())
-    {
-        ui->label->setText("Select layers");
-        return;
-    }
-    else
-    {
-        QString layers("--layer=");
-        if (ui->diffuseLayerCheckBox->isChecked()) {layers.append("diffuse,");}
-        if (ui->normalLayerCheckBox->isChecked()) {layers.append("normal,");}
-        if (ui->offsetLayerCheckBox->isChecked()) {layers.append("offset,");}
-        layers.chop(1);
-        arguments << layers;
-    }
+    QString layers("--layer=");
+    if (ui->diffuseLayerCheckBox->isChecked()) {layers.append("diffuse,");}
+    if (ui->normalLayerCheckBox->isChecked()) {layers.append("normal,");}
+    if (ui->offsetLayerCheckBox->isChecked()) {layers.append("offset,");}
+    layers.chop(1);
+    arguments << layers;
     arguments << ui->objectPathTextField->text();
 
     QProcess *proces = new QProcess(this);
     QObject::connect(proces,SIGNAL(finished(int)),this,SLOT(prerenderer_finished()));
     proces->start("./prerenderer-debug",arguments);
-    //qDebug()<<"Proces started";
+    qDebug() << "Proces started";
+    qDebug() << arguments;
 }
 
 void MainWindow::prerenderer_finished()
 {
-    ui->label->setText("Done");
-
     QStringList parts = ui->objectPathTextField->text().split("/");
     QString imageDir = parts.at(parts.size()-1);
     QString pathToImageDir;
