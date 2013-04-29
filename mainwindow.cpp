@@ -33,9 +33,13 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->profilesComboBox->addItem(listOfProfiles[profileIndex].profileName);
     }
 
-    ui->profilesComboBox->setCurrentIndex(0);
-    currentProfile = listOfProfiles.value(0);
-    loadCurrentProfileToGui();
+    if(!listOfProfiles.isEmpty())
+    {
+        ui->profilesComboBox->setCurrentIndex(0);
+        currentProfile = listOfProfiles.value(0);
+        loadCurrentProfileToGui();
+    }
+
 }
 
 void MainWindow::setValidators()
@@ -70,28 +74,63 @@ void MainWindow::loadProfilesFromFile()
         QStringList readRotations;
 
         readProfile.profileName = line;
-        stream.readLine();
-        readProfile.angle   = stream.readLine();
-        stream.readLine();
-        readProfile.height  = stream.readLine();
-        stream.readLine();
-        readProfile.width   = stream.readLine();
-        stream.readLine();
-        readProfile.zoom    = stream.readLine();
-        stream.readLine();
 
-        line = stream.readLine();
-        while(line != "rotations")
+        if(stream.readLine() == "Angle") {readProfile.angle = stream.readLine();}
+        else
         {
-            readLayers << line;
-            line = stream.readLine();
+            ui->label->setText("Profile file incomplete");
+            return;
         }
 
-        line = stream.readLine();
-        while(line != "end")
+        if(stream.readLine() == "Height") {readProfile.height = stream.readLine();}
+        else
         {
-            readRotations << line;
+            ui->label->setText("Profile file incomplete");
+            return;
+        }
+
+        if(stream.readLine() == "Width") {readProfile.width = stream.readLine();}
+        else
+        {
+            ui->label->setText("Profile file incomplete");
+            return;
+        }
+
+        if(stream.readLine() == "Zoom") {readProfile.zoom = stream.readLine();}
+        else
+        {
+            ui->label->setText("Profile file incomplete");
+            return;
+        }
+
+        if(stream.readLine() == "Layer")
+        {
             line = stream.readLine();
+            while(line != "rotations")
+            {
+                readLayers << line;
+                line = stream.readLine();
+            }
+        }
+        else
+        {
+            ui->label->setText("Profile file incomplete");
+            return;
+        }
+
+        if(line == "rotations")
+        {
+            line = stream.readLine();
+            while(line != "end")
+            {
+                readRotations << line;
+                line = stream.readLine();
+            }
+        }
+        else
+        {
+            ui->label->setText("Profile file incomplete");
+            return;
         }
 
         stream.readLine();
