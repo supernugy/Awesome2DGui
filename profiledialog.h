@@ -29,7 +29,8 @@ public:
     
 private slots:
 
-    //! If lineEdit is not empty accept else refuse
+    //! If lineEdit is visible and not empty accept else refuse
+    //! If lineEdit is not visible then accept
     void on_okButton_clicked();
 
     void on_cancelButton_clicked();
