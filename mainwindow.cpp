@@ -307,9 +307,9 @@ void MainWindow::on_renderButton_clicked()
     arguments << layers;
     arguments << ui->objectPathTextField->text();
 
-    QProcess *proces = new QProcess(this);
-    QObject::connect(proces,SIGNAL(finished(int)),this,SLOT(prerenderer_finished()));
-    proces->start("./prerenderer-debug",arguments);
+    QProcess *process = new QProcess(this);
+    QObject::connect(process,SIGNAL(finished(int)),this,SLOT(prerenderer_finished()));
+    process->start("./prerenderer-debug",arguments);
     qDebug() << "Proces started";
     qDebug() << arguments;
 }
