@@ -293,6 +293,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_objSelectButton_clicked()
 {
+    ui->label->clear();
     QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),previouslyUsedDirectory,tr("Obj Files (*.obj)"));
     if(objName != "")
     {
@@ -309,6 +310,7 @@ void MainWindow::on_objSelectButton_clicked()
 
 void MainWindow::on_pngSelectButton_clicked()
 {
+    ui->label->clear();
     QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),previouslyUsedDirectory,tr("Png Files (*.png)"));
     if(pngName != "")
     {
@@ -325,6 +327,7 @@ void MainWindow::on_pngSelectButton_clicked()
 
 void MainWindow::on_renderButton_clicked()
 {
+    ui->label->clear();
     if(ui->objectPathTextField->text().isEmpty())
     {
         ui->label->setText("Select .obj file");
@@ -400,6 +403,7 @@ void MainWindow::prerenderer_finished()
 
 void MainWindow::on_addRotationButton_clicked()
 {
+    ui->label->clear();
     if(!ui->addRotationLineEdit->text().isEmpty())
     {
         if(!currentProfile.profileRotations.contains(ui->addRotationLineEdit->text()))
@@ -415,6 +419,7 @@ void MainWindow::on_addRotationButton_clicked()
 
 void MainWindow::on_removeRotationButton_clicked()
 {
+    ui->label->clear();
     QList<QListWidgetItem *> selectedRotations = ui->rotationsListWidget->selectedItems();
 
     for (int selectedRotationIndex = 0; selectedRotationIndex < selectedRotations.size(); ++selectedRotationIndex)
@@ -447,6 +452,7 @@ void MainWindow::on_profilesComboBox_currentIndexChanged(const QString &selected
 
 void MainWindow::on_removeProfileButton_clicked()
 {
+    ui->label->clear();
     ProfileDialog dialogWindow(this, "", "Remove current profile?", false);
     dialogWindow.setWindowTitle("Remove profile");
     dialogWindow.show();
@@ -470,6 +476,20 @@ void MainWindow::on_removeProfileButton_clicked()
 
 void MainWindow::on_saveProfileButton_clicked()
 {
+    ui->label->clear();
+    if(ui->rotationsListWidget->count() == 0)
+    {
+        ui->label->setText("Add rotations");
+        return;
+    }
+    if(!ui->diffuseLayerCheckBox->isChecked()
+            && !ui->normalLayerCheckBox->isChecked()
+            && !ui->offsetLayerCheckBox->isChecked())
+    {
+        ui->label->setText("Select layers");
+        return;
+    }
+
     ProfileDialog dialogWindow(this, "", "Save profile?", true);
     dialogWindow.setWindowTitle("Save profile");
     dialogWindow.show();
