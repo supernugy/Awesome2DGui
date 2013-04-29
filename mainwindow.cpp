@@ -233,6 +233,7 @@ void MainWindow::updateProfileCombobox(int selectedIndex)
 
 MainWindow::~MainWindow()
 {
+    profilesFile->close();
     delete ui;
 }
 
