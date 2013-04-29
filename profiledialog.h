@@ -15,8 +15,10 @@ class ProfileDialog : public QDialog
     Q_OBJECT
     
 public:
+    //! This constructor is called from mainWindow in save and remove profile cases
     explicit ProfileDialog(MainWindow *parent = 0, const QString& name = "", const QString& message = "", bool setLineEditAndLabelVisible = true);
 
+    //! This constructor is called from this profile dialog in case of overwrite
     explicit ProfileDialog(QWidget *parent = 0, const QString& name = "", const QString& message = "", bool setLineEditAndLabelVisible = true);
 
     ~ProfileDialog();
