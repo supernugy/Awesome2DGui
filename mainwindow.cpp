@@ -389,11 +389,12 @@ void MainWindow::prerenderer_finished()
     imageDir.append("_prerender");
 
     pathToImageDir = QApplication::applicationDirPath();
-    pathToImageDir.append("/");
-    pathToImageDir.append(imageDir);
-    pathToImageDir.append("/");
+    pathToImageDir += "/" + imageDir + "/";
 
-    ImageDisplayForm *displayForm = new ImageDisplayForm(this, pathToImageDir);
+    // parent here must be 0 because otherwise it glitches up - dont know why
+    // plus without a parent it wont close after closing main window
+    // so you can keep looking through images
+    ImageDisplayForm *displayForm = new ImageDisplayForm(0, pathToImageDir);
     displayForm->show();
 }
 
