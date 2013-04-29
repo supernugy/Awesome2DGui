@@ -106,10 +106,13 @@ void MainWindow::loadProfilesFromFile()
         if(stream.readLine() == "Layer")
         {
             line = stream.readLine();
-            while(line != "rotations")
+            int layerCount = 0;
+            // reads layers from file - layerCount in case of broken file (there are only 3 layers)
+            while(line != "rotations" || layerCount == 3)
             {
                 readLayers << line;
                 line = stream.readLine();
+                layerCount++;
             }
         }
         else
@@ -121,10 +124,13 @@ void MainWindow::loadProfilesFromFile()
         if(line == "rotations")
         {
             line = stream.readLine();
-            while(line != "end")
+            int rotationCount = 0;
+            // reads layers from file - rotationCount in case of broken file (there can be only 360 rotations)
+            while(line != "end" || rotationCount == 360)
             {
                 readRotations << line;
                 line = stream.readLine();
+                rotationCount++;
             }
         }
         else
