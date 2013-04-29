@@ -415,6 +415,7 @@ void MainWindow::on_addRotationButton_clicked()
             ui->rotationsListWidget->sortItems(rotationListWidgetSortOrder);
         }
     }
+    ui->addRotationLineEdit->clear();
 }
 
 void MainWindow::on_removeRotationButton_clicked()
