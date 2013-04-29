@@ -37,7 +37,7 @@ private slots:
     void on_removeRotationButton_clicked();
 
     /**
-     * @brief Changes currentProfile to one selected in comboBox and loads it to the gui
+     * Changes currentProfile to one selected in comboBox and loads it to the gui
      * @param selectedProfile - name of profile selected in comboBox
      */
     void on_profilesComboBox_currentIndexChanged(const QString &selectedProfile);

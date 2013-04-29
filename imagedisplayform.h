@@ -18,6 +18,7 @@ public:
     ~ImageDisplayForm();
     
 private slots:
+    //! Displays .png image after clicking on it in the list
     void on_imageListWidget_itemClicked(QListWidgetItem *item);
 
 private:

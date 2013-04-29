@@ -399,6 +399,7 @@ void MainWindow::on_removeProfileButton_clicked()
             break;
         }
     }
+
     currentProfile = listOfProfiles.value(0);
     updateProfileCombobox(0);
     loadCurrentProfileToGui();

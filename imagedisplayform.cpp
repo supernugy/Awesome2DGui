@@ -24,9 +24,6 @@ ImageDisplayForm::~ImageDisplayForm()
     delete ui;
 }
 
-/**
- * @brief Displays .png image after clicking on it in the list
- */
 void ImageDisplayForm::on_imageListWidget_itemClicked(QListWidgetItem *item)
 {
     const QPixmap pixMap(path+item->text());
