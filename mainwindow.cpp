@@ -17,9 +17,9 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    order(Qt::AscendingOrder),
+    rotationListWidgetSortOrder(Qt::AscendingOrder),
     profilesFile (new QFile("guiProfiles.txt")),
-    lastDirectory(QApplication::applicationDirPath())
+    previouslyUsedDirectory(QApplication::applicationDirPath())
 {
     ui->setupUi(this);
     this->setWindowTitle("Prerenderer");
@@ -158,7 +158,7 @@ void MainWindow::loadCurrentProfileToGui()
     }
 
     ui->rotationsListWidget->setSortingEnabled(true);
-    ui->rotationsListWidget->sortItems(order);
+    ui->rotationsListWidget->sortItems(rotationListWidgetSortOrder);
 }
 
 void MainWindow::addProfileToFile(const Profile &newProfile)
@@ -238,7 +238,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_objSelectButton_clicked()
 {
-    QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),lastDirectory,tr("Obj Files (*.obj)"));
+    QString objName = QFileDialog::getOpenFileName(this,tr("Select .obj File"),previouslyUsedDirectory,tr("Obj Files (*.obj)"));
     if(objName != "")
     {
         ui->objectPathTextField->setText(objName);
@@ -248,13 +248,13 @@ void MainWindow::on_objSelectButton_clicked()
         {
             newLastDir.append(parts[index]+"/");
         }
-        lastDirectory = newLastDir;
+        previouslyUsedDirectory = newLastDir;
     }
 }
 
 void MainWindow::on_pngSelectButton_clicked()
 {
-    QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),lastDirectory,tr("Png Files (*.png)"));
+    QString pngName = QFileDialog::getOpenFileName(this,tr("Select .png File"),previouslyUsedDirectory,tr("Png Files (*.png)"));
     if(pngName != "")
     {
         ui->texturePathTextField->setText(pngName);
@@ -264,7 +264,7 @@ void MainWindow::on_pngSelectButton_clicked()
         {
             newLastDir.append(parts[index]+"/");
         }
-        lastDirectory = newLastDir;
+        previouslyUsedDirectory = newLastDir;
     }
 }
 
@@ -346,7 +346,7 @@ void MainWindow::on_addRotationButton_clicked()
             QString newRotation = ui->addRotationLineEdit->text();
             QListWidgetItem *item = new QListWidgetItem(ui->rotationsListWidget, 0);
             item->setData(Qt::DisplayRole, newRotation.toInt());
-            ui->rotationsListWidget->sortItems(order);
+            ui->rotationsListWidget->sortItems(rotationListWidgetSortOrder);
         }
     }
 }

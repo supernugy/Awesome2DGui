@@ -36,21 +36,20 @@ private slots:
     //! Removes rotation selected in rotationsListWidget from currentProfile
     void on_removeRotationButton_clicked();
 
-    /**
-     * Changes currentProfile to one selected in comboBox and loads it to the gui
-     * @param selectedProfile - name of profile selected in comboBox
-     */
+    //! Changes currentProfile to one selected in comboBox and loads it to the gui
+    //!
+    //! @param selectedProfile - name of profile selected in comboBox
     void on_profilesComboBox_currentIndexChanged(const QString &selectedProfile);
 
-    //! Opens a dialog window. If dialog accepts then it will remove current profile from listOfProfiles as well as from "guiProfiles.txt"
+    //! Opens a dialog window. If dialog accepts then it will remove current profile
+    //! from listOfProfiles as well as from "guiProfiles.txt"
     void on_removeProfileButton_clicked();
 
     //! This slot is started after prerenderering .obj file. Shows ImageDisplayForm.
     void prerenderer_finished();
 
-    /**
-     * Opens a dialog window with line edit. If profile name in line edit is new the it will create new profile else it will ask for overwrite.
-     */
+    //! Opens a dialog window with line edit. If profile name in line edit is
+    //! new the it will create new profile else it will ask for overwrite.
     void on_saveProfileButton_clicked();
 
 private:
@@ -84,10 +83,9 @@ private:
     //! Rewrites whole "guiProfiles.txt" file with all profiles in listOfProfiles
     void addAllProfilesToFile();
 
-    /**
-     * Updates profile comboBox by clearing it and than adding all profile names into it
-     * @param selectedIndex - comboBox index that will be set as current
-     */
+    //! Updates profile comboBox by clearing it and then adding all profile names into it
+    //!
+    //! @param selectedIndex - comboBox index that will be set as current
     void updateProfileCombobox(int selectedIndex);
 
     Ui::MainWindow *ui;
@@ -96,11 +94,11 @@ private:
 
     QList<Profile> listOfProfiles;
 
-    Qt::SortOrder order;
+    Qt::SortOrder rotationListWidgetSortOrder;
 
     QFile *profilesFile;
 
-    QString lastDirectory;
+    QString previouslyUsedDirectory;
 };
 
 #endif // MAINWINDOW_H
