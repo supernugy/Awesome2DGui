@@ -44,6 +44,7 @@ bool ProfileDialog::isOverwriten()
 
 void ProfileDialog::on_okButton_clicked()
 {
+    // This if is for save profile case (profileNameLineEdit is visible)
     if(!ui->profileNameLineEdit->text().isEmpty() && ui->profileNameLineEdit->isVisible())
     {
         QStringList listOfNames(parentWindow->getProfileNames());
@@ -65,8 +66,13 @@ void ProfileDialog::on_okButton_clicked()
             overwrite = false;
             this->accept();
         }
-
     }
+    /*
+     * This if is for remove profile and overwrite profile cases (no profileNameLineEdit).
+     * This if need to be here because if we are going to save profile and we click
+     * the OK button with empty profileNameLineEdit it will accept and it
+     * shouldn't do that...
+     */
     else if(!ui->profileNameLineEdit->isVisible())
     {
         this->accept();
