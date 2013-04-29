@@ -54,7 +54,12 @@ void MainWindow::setValidators()
 
 void MainWindow::loadProfilesFromFile()
 {
-    profilesFile->open(QIODevice::ReadOnly);
+    if(!profilesFile->open(QIODevice::ReadOnly))
+    {
+        ui->label->setText("File corrupted");
+        return;
+    }
+
     QTextStream stream(profilesFile);
     QString line = stream.readLine();
 
@@ -151,7 +156,8 @@ void MainWindow::loadCurrentProfileToGui()
     ui->normalLayerCheckBox->setChecked(false);
     ui->offsetLayerCheckBox->setChecked(false);
 
-    for (int layerIndex = 0; layerIndex < currentProfile.listOfLayers.size(); ++layerIndex) {
+    for (int layerIndex = 0; layerIndex < currentProfile.listOfLayers.size(); ++layerIndex)
+    {
         if(currentProfile.listOfLayers[layerIndex] == "diffuse") {ui->diffuseLayerCheckBox->setChecked(true);}
         if(currentProfile.listOfLayers[layerIndex] == "normal")  {ui->normalLayerCheckBox->setChecked(true);}
         if(currentProfile.listOfLayers[layerIndex] == "offset")  {ui->offsetLayerCheckBox->setChecked(true);}
@@ -163,7 +169,8 @@ void MainWindow::loadCurrentProfileToGui()
 
 void MainWindow::addProfileToFile(const Profile &newProfile)
 {
-    if(!profilesFile->open(QIODevice::Append)){
+    if(!profilesFile->open(QIODevice::Append))
+    {
         return;
     }
 
@@ -175,7 +182,8 @@ void MainWindow::addProfileToFile(const Profile &newProfile)
             + newProfile.width       + "\nZoom\n"
             + newProfile.zoom        + "\nLayer\n";
 
-    for (int layerIndex = 0; layerIndex < newProfile.listOfLayers.size(); ++layerIndex) {
+    for (int layerIndex = 0; layerIndex < newProfile.listOfLayers.size(); ++layerIndex)
+    {
         stream << newProfile.listOfLayers[layerIndex] + "\n";
     }
     stream << "rotations\n";
@@ -203,7 +211,8 @@ void MainWindow::addAllProfilesToFile()
                 + listOfProfiles[profileIndex].width       + "\nZoom\n"
                 + listOfProfiles[profileIndex].zoom        + "\nLayer\n";
 
-        for (int layerIndex = 0; layerIndex < listOfProfiles[profileIndex].listOfLayers.size(); ++layerIndex) {
+        for (int layerIndex = 0; layerIndex < listOfProfiles[profileIndex].listOfLayers.size(); ++layerIndex)
+        {
             stream << listOfProfiles[profileIndex].listOfLayers[layerIndex] + "\n";
         }
         stream << "rotations\n";
@@ -339,7 +348,7 @@ void MainWindow::prerenderer_finished()
     pathToImageDir.append(imageDir);
     pathToImageDir.append("/");
 
-    ImageDisplayForm *displayForm = new ImageDisplayForm(0,pathToImageDir);
+    ImageDisplayForm *displayForm = new ImageDisplayForm(this, pathToImageDir);
     displayForm->show();
 }
 
@@ -433,10 +442,10 @@ void MainWindow::on_saveProfileButton_clicked()
             }
         }
 
-        ui->angleLineEdit->text().isEmpty()   ? listOfProfiles[overwritenProfileIndex].angle   = -1 : listOfProfiles[overwritenProfileIndex].angle   = ui->angleLineEdit->text();
-        ui->heightLineEdit->text().isEmpty()  ? listOfProfiles[overwritenProfileIndex].height  = -1 : listOfProfiles[overwritenProfileIndex].height  = ui->heightLineEdit->text();
-        ui->widthLineEdit->text().isEmpty()   ? listOfProfiles[overwritenProfileIndex].width   = -1 : listOfProfiles[overwritenProfileIndex].width   = ui->widthLineEdit->text();
-        ui->zoomLineEdit->text().isEmpty()    ? listOfProfiles[overwritenProfileIndex].zoom    = -1 : listOfProfiles[overwritenProfileIndex].zoom    = ui->zoomLineEdit->text();
+        listOfProfiles[overwritenProfileIndex].angle  = ui->angleLineEdit->text().isEmpty()  ? "-1" : ui->angleLineEdit->text();
+        listOfProfiles[overwritenProfileIndex].height = ui->heightLineEdit->text().isEmpty() ? "-1" : ui->heightLineEdit->text();
+        listOfProfiles[overwritenProfileIndex].width  = ui->widthLineEdit->text().isEmpty()  ? "-1" : ui->widthLineEdit->text();
+        listOfProfiles[overwritenProfileIndex].zoom   = ui->zoomLineEdit->text().isEmpty()   ? "-1" : ui->zoomLineEdit->text();
 
         listOfProfiles[overwritenProfileIndex].listOfLayers.clear();
         if (ui->diffuseLayerCheckBox->isChecked()) {listOfProfiles[overwritenProfileIndex].listOfLayers << "diffuse";}
@@ -456,10 +465,10 @@ void MainWindow::on_saveProfileButton_clicked()
         Profile newProfile;
         newProfile.profileName = dialogWindow.getProfileName();
 
-        ui->angleLineEdit->text().isEmpty()  ? newProfile.angle  = -1 : newProfile.angle  = ui->angleLineEdit->text();
-        ui->heightLineEdit->text().isEmpty() ? newProfile.height = -1 : newProfile.height = ui->heightLineEdit->text();
-        ui->widthLineEdit->text().isEmpty()  ? newProfile.width  = -1 : newProfile.width  = ui->widthLineEdit->text();
-        ui->zoomLineEdit->text().isEmpty()   ? newProfile.zoom   = -1 : newProfile.zoom   = ui->zoomLineEdit->text();
+        newProfile.angle  = ui->angleLineEdit->text().isEmpty()  ? "-1" : ui->angleLineEdit->text();
+        newProfile.height = ui->heightLineEdit->text().isEmpty() ? "-1" : ui->heightLineEdit->text();
+        newProfile.width  = ui->widthLineEdit->text().isEmpty()  ? "-1" : ui->widthLineEdit->text();
+        newProfile.zoom   = ui->zoomLineEdit->text().isEmpty()   ? "-1" : ui->zoomLineEdit->text();
 
         if (ui->diffuseLayerCheckBox->isChecked()) {newProfile.listOfLayers << "diffuse";}
         if (ui->normalLayerCheckBox->isChecked())  {newProfile.listOfLayers << "normal";}
